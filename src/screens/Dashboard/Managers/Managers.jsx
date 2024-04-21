@@ -1,7 +1,11 @@
+import TestimonialsComponent from "../../../components/Manager"
+
 const Managers = () => {
   return (
     <div>
-      Managers
+      <>
+        <TestimonialsComponent />
+      </>
     </div>
   )
 }

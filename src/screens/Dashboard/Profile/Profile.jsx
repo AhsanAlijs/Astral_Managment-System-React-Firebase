@@ -1,10 +1,11 @@
 import React from 'react'
+import ProfileComponent from '../../../components/Profile'
 
 const Profile = () => {
   return (
-    <div>
-      Profile
-    </div>
+    <>
+      <ProfileComponent />
+    </>
   )
 }
 

@@ -13,6 +13,7 @@
     "@remixicon/react": "^4.2.0",
     "flowbite": "^2.3.0",
     "flowbite-react": "^0.9.0",
+    "formik": "^2.4.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.3"

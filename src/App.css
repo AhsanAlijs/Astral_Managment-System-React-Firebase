@@ -2,3 +2,8 @@
     font-family:'sans-pro' ;
     src: url('./assets/fonts/sanspro.ttf');
 }
+
+@font-face {
+    font-family: 'sans-pro-light';
+    src: url('./assets/fonts/sansprolight.ttf');
+}
