@@ -1,4 +1,6 @@
+import { Link } from "react-router-dom"
 import TestimonialsComponent from "../../../components/Manager"
+
 
 const Managers = () => {
   return (
@@ -6,7 +8,7 @@ const Managers = () => {
       <>
         <TestimonialsComponent />
       </>
-    </div>
+    </div >
   )
 }
 

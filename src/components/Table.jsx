@@ -1,7 +1,7 @@
 import { RiDeleteBin2Fill, RiEdit2Fill } from '@remixicon/react';
 import React from 'react';
 
-const Table = ({ name, email, role, employee }) => {
+const Table = ({ name, email, roll, employee }) => {
 
     // Delete Function Start
     const deleted = () => {
@@ -19,7 +19,7 @@ const Table = ({ name, email, role, employee }) => {
 
     return (
         <>
-            <div className="overflow-hidden rounded-lg border  border-gray-200 shadow-md m-5">
+            <div className="overflow-x-auto lg:overflow-hidden  rounded-lg border  border-gray-200 shadow-md m-5">
                 <table className="w-full border-collapse bg-white text-left text-sm text-gray-500  ">
                     <thead className="bg-gray-50">
                         <tr>
@@ -42,29 +42,23 @@ const Table = ({ name, email, role, employee }) => {
                                     <span className="absolute right-0 bottom-0 h-2 w-2 rounded-full bg-green-400 ring ring-white"></span>
                                 </div>
                                 <div className="text-sm">
-                                    <div className="font-medium text-gray-700">Steven Jobs</div>
-                                    <div className="text-gray-400">jobs@sailboatui.com</div>
+                                    <div className="font-medium text-gray-700"> {name} </div>
+                                    <div className="text-gray-400"> {email} </div>
                                 </div>
                             </th>
                             <td className="px-6 py-4">
                                 <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600">
                                     <span className="h-1.5 w-1.5 rounded-full bg-green-600"></span>
-                                    Manager
+                                    {roll}
                                 </span>
                             </td>
                             <td className="px-6 py-4">Product Designer</td>
                             <td className="px-6 py-4">
                                 <div className="flex gap-2">
                                     <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-1 text-xs font-semibold text-blue-600">
-                                        Design
+                                        {employee}
                                     </span>
-
-                                    <span className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2 py-1 text-xs font-semibold text-indigo-600">
-                                        Development
-                                    </span>
-                                    {/* <span className="inline-flex items-center gap-1 rounded-full bg-violet-50 px-2 py-1 text-xs font-semibold text-violet-600">
-                        Develop
-                    </span> */}
+                                    
                                 </div>
                             </td>
                             <td className="px-6 py-4">

@@ -1,4 +1,4 @@
-import { RiBarChartGroupedFill, RiCloseFill, RiDraftFill, RiMenuFill, RiProfileFill, RiUser2Fill, RiUserAddFill, RiUserStarFill } from "@remixicon/react";
+import { RiBarChartGroupedFill, RiCloseFill, RiMenuFill, RiProfileFill, RiUser2Fill, RiUserAddFill, RiUserStarFill } from "@remixicon/react";
 import { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 
@@ -117,12 +117,6 @@ export default function Dashboard() {
                                 <RiProfileFill size={23} />
                             </span>
                             <span className="text-[18px] font-[500]" >Profile</span>
-                        </Link>
-                        <Link to={'/dashboard/addTask'} className="flex items-center space-x-1 rounded-md px-2 py-3 hover:bg-gray-100 hover:text-[gray]">
-                            <span>
-                                <RiDraftFill size={23} />
-                            </span>
-                            <span className="text-[18px] font-[500]" >Add Task</span>
                         </Link>
                     </aside>
 
