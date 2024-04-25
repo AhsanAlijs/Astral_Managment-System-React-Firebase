@@ -1,6 +1,6 @@
 import React from 'react';
 
-function ProfileComponent() {
+function ProfileComponent({  }) {
     return (
         <div className="max-w-4xl flex items-center   flex-wrap mx-auto my-32 lg:my-0 mt-2000 lg:mt-20 ">
 

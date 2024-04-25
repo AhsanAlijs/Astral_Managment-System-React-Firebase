@@ -2,6 +2,7 @@ import React from 'react'
 import Task from '../../../components/Tasks'
 import { RiDraftFill } from '@remixicon/react'
 import { Link } from 'react-router-dom'
+import ManagerTask from '../../../components/ManagerTask'
 
 const AllTasks = () => {
     return (
@@ -14,8 +15,11 @@ const AllTasks = () => {
                     </button>
                 </Link>
             </div>
-            <Task />
-            
+
+            {/* <Task /> */}
+
+            <ManagerTask />
+
         </>
 
     )

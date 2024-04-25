@@ -1,10 +1,11 @@
 import React from 'react'
+import DashboardCards from '../../../components/DashboardCards'
 
 const AdminGraph = () => {
   return (
-    <div>
-      Graph
-    </div>
+    <>
+      <DashboardCards />
+    </>
   )
 }
 

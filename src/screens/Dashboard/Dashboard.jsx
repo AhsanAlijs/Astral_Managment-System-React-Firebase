@@ -1,6 +1,10 @@
 import { RiBarChartGroupedFill, RiCloseFill, RiMenuFill, RiProfileFill, RiUser2Fill, RiUserAddFill, RiUserStarFill } from "@remixicon/react";
-import { useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import { auth, db } from "../../config/firebase/firebaseConfig";
+import { useAuth } from "../AuthProvider";
 
 
 export default function Dashboard() {
@@ -8,11 +12,32 @@ export default function Dashboard() {
     const [profileOpen, setProfileOpen] = useState(false)
 
 
+    const navigate = useNavigate();
+
+    const { user, setUser } = useAuth();
+
+
+
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            const uid = user.uid;
+            // console.log(uid);
+        } else {
+            navigate('/')
+        }
+    });
+
+
+
     const logOut = () => {
-        console.log('log Out Successfully');
+        signOut(auth).then(() => {
+            setUser(null)
+            navigate('/')
+
+        }).catch((error) => {
+            console.log('user signOut Faild');
+        });
     }
-
-
 
     return (
         <>
@@ -35,15 +60,15 @@ export default function Dashboard() {
                             // onClickOutside={() => setProfileOpen(false)}
                             className="overflow-hidden  rounded-full"
                         >
-                            <img src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="plchldr.co" className="h-16 w-16" />
+                            <img src={user.imageUrl} alt="plchldr.co" className="h-16 w-16" />
                         </button>
 
                         {/* dropdown profile */}
                         {profileOpen && (
                             <div className="absolute right-[10px] lg:right-[200px] mt-3 w-48 divide-y divide-gray-200 rounded-md border border-gray-200 bg-white shadow-md">
                                 <div className="flex items-center space-x-2 p-2">
-                                    <img src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="plchldr.co" className="h-9 w-9 rounded-full" />
-                                    <div className="font-medium">Hafiz Haziq</div>
+                                    <img src={user.imageUrl} alt="plchldr.co" className="h-9 w-9 rounded-full" />
+                                    <div className="font-medium">{user.name}</div>
                                 </div>
 
                                 <div className="flex flex-col space-y-3 p-2">
@@ -74,9 +99,9 @@ export default function Dashboard() {
                     </div>
                 </header>
 
-                <div className="flex min-h-[calc(100vh_-_60px)]">
+                <div className="flex min-h-[calc(100vh_-_60px)] ">
                     {/* aside */}
-                    <aside className={`flex w-72 mt-[5px] flex-col space-2  border-2 rounded-md mb-20  border-black-200 bg-white p-4 ${asideOpen ? '' : 'hidden'} translate-10 `}>
+                    <aside className={`flex w-72 mt-[5px] flex-col space-2 border rounded-md mb-20  border-black-200 bg-white p-4 ${asideOpen ? '' : 'hidden'} `}>
 
                         {/* sidebar header Start */}
                         <div className="mt-[5px]">

@@ -1,13 +1,28 @@
 import { RiCloseFill, RiMenuFill, RiProfileFill, RiTaskFill } from '@remixicon/react'
+import { signOut } from 'firebase/auth'
 import React, { useState } from 'react'
-import { Link, Outlet } from 'react-router-dom'
+import { Link, Outlet, useNavigate } from 'react-router-dom'
+import { auth } from '../../config/firebase/firebaseConfig'
+import { useAuth } from '../AuthProvider'
 
 const ManagerDashboard = () => {
 
   const [asideOpen, setAsideOpen] = useState(false)
   const [profileOpen, setProfileOpen] = useState(false)
 
+  const navigate = useNavigate()
+  const {user, setUser} = useAuth();
 
+
+  const logOut = () => {
+    signOut(auth).then(() => {
+      setUser(null);
+      navigate('/')
+
+    }).catch((error) => {
+      console.log('user signOut Faild');
+    });
+  }
 
   return (
     <div>
@@ -31,15 +46,15 @@ const ManagerDashboard = () => {
                 // onClickOutside={() => setProfileOpen(false)}
                 className="overflow-hidden  rounded-full"
               >
-                <img src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="plchldr.co" className="h-16 w-16" />
+                <img src={user.imageUrl} alt="plchldr.co" className="h-16 w-16" />
               </button>
 
               {/* dropdown profile */}
               {profileOpen && (
                 <div className="absolute right-[10px] lg:right-[200px] mt-3 w-48 divide-y divide-gray-200 rounded-md border border-gray-200 bg-white shadow-md">
                   <div className="flex items-center space-x-2 p-2">
-                    <img src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="plchldr.co" className="h-9 w-9 rounded-full" />
-                    <div className="font-medium">Hafiz Haziq</div>
+                    <img src={user.imageUrl} alt="plchldr.co" className="h-9 w-9 rounded-full" />
+                    <div className="font-medium">{user.name}</div>
                   </div>
 
                   <div className="flex flex-col space-y-3 p-2">
@@ -47,7 +62,7 @@ const ManagerDashboard = () => {
                   </div>
 
                   <div className="p-2">
-                    <button className="flex items-center space-x-2 transition hover:text-blue-600">
+                    <button onClick={logOut} className="flex items-center space-x-2 transition hover:text-blue-600">
                       <svg
                         className="h-4 w-4"
                         fill="none"
@@ -62,7 +77,7 @@ const ManagerDashboard = () => {
                           d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
                         ></path>
                       </svg>
-                      <div>Log Out</div>
+                      <div >Log Out</div>
                     </button>
                   </div>
                 </div>
