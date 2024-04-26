@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import Table from '../../../components/Table';
+
+import { RiDeleteBin2Fill, RiEdit2Fill } from '@remixicon/react';
 
 const Employee = () => {
 
@@ -100,23 +101,26 @@ const Employee = () => {
 
 
     return (
-        <>
-            <div>
-                <p className='lg:text-[30px] md:text-[25px] text-[13px]  font-[sans-pro] '>List Of Employee Type</p>
-            </div>
+        <main className="max-w-screen-xl mx-auto p-4">
+            <h1 className="text-4xl max-sm:text-3xl font-semibold  text-center mt-4 text-teal-600  uppercase  
+            [-webkit-text-stroke:1px_#333]  ">
+                Employee list
+            </h1>
 
-            <div className='border'>
-            </div>
-            <div className="mb-4 border-b border-gray-200 dark:border-gray-700 lg:flex lg:items-center lg:justify-center">
-                <ul className="flex flex-wrap -mb-px text-sm font-medium text-center sm:text-center " id="default-styled-tab" data-tabs-toggle="#default-styled-tab-content" data-tabs-active-classes="text-purple-600 hover:text-purple-600 dark:text-purple-500 dark:hover:text-purple-500 border-purple-600 dark:border-purple-500" data-tabs-inactive-classes="dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300" role="tablist">
+            <div className="border-gray-200 mt-6">
+
+                <ul className="flex  gap-4 justify-center text-sm font-medium text-center sm:text-center " id="default-styled-tab" data-tabs-toggle="#default-styled-tab-content" data-tabs-inactive-classes=" text-gray-500 hover:text-gray-600  border-gray-100 hover:border-gray-300 " role="tablist">
 
 
                     {employeesTypeArray.map((item, index) => {
                         return (
-                            <li key={index} className="me-2" role="presentation"  >
-                                <button onClick={() => getEmployee(item)} className="inline-block lg:p-4 p-2 border-b-2 rounded-t-lg text-[12px] font-[sans-pro] lg:text-[18px]  " id="profile-styled-tab" data-tabs-target="#styled-profile" type="button" role="tab" aria-controls="profile" aria-selected="false">
-                                    {item}
-                                </button>
+                            <li key={index} className=''  >
+                                <div className='bg-gradient-to-r from-teal-500 to-50% to-transparent pb-[2px] hover:bg-teal-500 transition-colors 
+                                ease-in-out ' >
+                                    <button onClick={() => getEmployee(item)} className="pb-2  bg-[#ecfafa] text-xl font-semibold  uppercase  
+             ">                     {item}
+                                    </button>
+                                </div>
                             </li>
                         );
                     })}
@@ -124,16 +128,99 @@ const Employee = () => {
             </div>
 
 
-            {arr.length > 0 ? (arr.map((item, index) =>
-                <Table
-                    name={item.employeeName}
-                    email={item.employeeEmail}
-                    roll={item.State}
-                    employee={item.employeeType}
-                    key={index}
-                />
 
-            )) : (<h1 className='text-center text-lg' >Please Select Any one tab and see the selected information...</h1>)}
+
+
+
+
+
+
+
+
+
+            <div className="overflow-x-auto lg:overflow-hidden  rounded-lg border  border-gray-200 shadow-md bg-white mt-8">
+                {arr.length > 0 ?
+                    <table className="w-full border-collapse bg-white text-left text-sm text-gray-500  ">
+                        <thead className="bg-gray-50">
+                            <tr>
+                                <th scope="col" className="px-6 py-4 font-medium text-gray-900">Name</th>
+                                <th scope="col" className="px-6 py-4 font-medium text-gray-900">State</th>
+                                <th scope="col" className="px-6 py-4 font-medium text-gray-900">Role</th>
+                                <th scope="col" className="px-6 py-4 font-medium text-gray-900">Team</th>
+                                <th scope="col" className="px-6 py-4 font-medium text-gray-900"></th>
+                            </tr>
+                        </thead>
+
+                        {arr.map((item, index) =>
+                            <tbody key={index} className="divide-y divide-gray-100 border-t border-gray-100 ">
+                                <tr className="hover:bg-gray-50">
+                                    <th className="flex gap-3 px-6 py-4 font-normal text-gray-900">
+                                        <div className="relative h-10 w-10">
+                                            <img
+                                                className="h-full w-full rounded-full object-cover object-center"
+                                                src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                                alt=""
+                                            />
+                                            <span className="absolute right-0 bottom-0 h-2 w-2 rounded-full bg-green-400 ring ring-white"></span>
+                                        </div>
+                                        <div className="text-sm">
+                                            <div className="font-medium text-gray-700"> {item.employeeName} </div>
+                                            <div className="text-gray-400">{item.employeeEmail}</div>
+                                        </div>
+                                    </th>
+                                    <td className="px-6 py-4">
+                                        <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600">
+                                            <span className="h-1.5 w-1.5 rounded-full bg-green-600"></span>
+                                            {item.employeeType}
+                                        </span>
+                                    </td>
+                                    <td className="px-6 py-4">Product Designer</td>
+                                    <td className="px-6 py-4">
+                                        <div className="flex gap-2">
+                                            <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-1 text-xs font-semibold text-blue-600">
+                                                {item.State}
+                                            </span>
+
+                                        </div>
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        <div className="flex justify-end gap-4">
+                                            <button   >
+                                                <RiDeleteBin2Fill size={25} />
+                                            </button>
+
+                                            <button data-tooltip="Edit">
+                                                <RiEdit2Fill size={25} />
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        )}
+                    </table>
+                    :
+                    <h2 className='p-4 text-center' >
+                        Please Select Any one tab and see the selected information...
+                    </h2>
+                }
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
             {/* {employees.map((item, index) => {
@@ -159,7 +246,7 @@ const Employee = () => {
 
 
 
-        </>
+        </main>
     )
 }
 

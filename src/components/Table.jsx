@@ -73,7 +73,7 @@ const Table = ({ name, email, roll, employee }) => {
                                 </div>
                             </td>
                         </tr>
-                        {/* Additional table rows go here */}
+                        
                     </tbody>
                 </table>
             </div>

@@ -68,7 +68,98 @@ const Login = () => {
 
   return (
     <>
-      <section className="bg-gray-50">
+
+
+      <div className="flex items-center justify-center h-screen px-6 py-12 lg:px-8 bg-[url('/loginbg.jpg')] bg-cover bg-no-repeat ">
+
+        <div className="flex flex-col items-center justify-center  border border-[#86fafa]  rounded-e-3xl rounded-s-3xl shadow-2xl p-8 sm:w-full sm:max-w-md ">
+          <img
+            className="h-[140px] w-auto mb-5"
+            src="/logo.png"
+            alt="Your Company"
+          />
+          <h2 className="text-2xl font-bold leading-9 tracking-tight text-teal-100 mb-5">
+            Sign in to your account
+          </h2>
+          <form onSubmit={(e) => loginUser(e)}  className="w-full" action="#" method="POST">
+            <div className="mb-4">
+              <label htmlFor="email" className="block text-sm font-medium leading-6 text-teal-100">
+                Email address
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                className="block w-full rounded-md border-b-orange-300  shadow-sm py-2 px-3 placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:shadow-outline-indigo transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
+              />
+            </div>
+
+            <div className="mb-4">
+              <div className="flex justify-between">
+                <label htmlFor="password" className="block text-sm font-medium leading-6 text-teal-100">
+                  Password
+                </label>
+              </div>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                required
+                className="block w-full rounded-md border-gray-300 shadow-sm py-2 px-3 placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:shadow-outline-indigo transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
+              />
+              <a href="#" className="text-sm mt-2 block font-semibold text-white hover:text-teal-100">
+                Forgot password?
+              </a>
+            </div>
+
+            <div>
+              <button
+                type="submit"
+                className="w-full rounded-md bg-teal-400 text-white py-2 px-4 font-semibold hover:bg-teal-500  transition-colors duration-150 ease-in-out"
+              >
+                Sign in
+              </button>
+            </div>
+          </form>
+
+
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      {/* <section className="bg-gray-50">
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
           <a href="#" className="flex items-center mb-6 text-2xl font-bold text-gray-900">
             <img className="w-[100px] mr-2" src="/logo.png" alt="logo" />
@@ -100,7 +191,16 @@ const Login = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
+
+
+
+
+
+
+
+
+
 
     </>
   )

@@ -1,5 +1,5 @@
 import { Outlet, createBrowserRouter } from 'react-router-dom';
-import Dashboard from '../../screens/Dashboard/Dashboard';
+import Dashboard from '../../screens/Dashboard/Dashboard2';
 import Employee from '../../screens/Dashboard/Employee/Employee';
 import AdminGraph from '../../screens/Dashboard/Graph/AdminGraph';
 import Managers from '../../screens/Dashboard/Managers/Managers';

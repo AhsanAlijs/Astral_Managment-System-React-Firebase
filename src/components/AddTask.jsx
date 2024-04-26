@@ -180,7 +180,6 @@ const AddTask = () => {
                                     <div className="relative w-full mb-3">
                                         <label htmlFor="underline_select" className="block uppercase text-blueGray-600 mb-2 text-[20px] font-medium">Select Employees</label>
                                         <select onChange={(e) => {
-                                            // e.target.selectedOptions.forEach(option => console.log(option.value) )
                                             let items = e.target.selectedOptions;
                                             let assigneeArr = [];
                                             for (let i = 0; i < items.length; i++) {
@@ -188,7 +187,7 @@ const AddTask = () => {
                                                 assigneeArr.push(items[i].getAttribute('value'))
                                             }
                                             setFormData({ ...formData, assignee: assigneeArr })
-                                            }} name='select' id="underline_select" className=" text-lg font-extrabold font-[sans-pro-light] border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded  shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" multiple>
+                                        }} name='select' id="underline_select" className=" text-lg font-extrabold font-[sans-pro-light] border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded  shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" multiple>
                                             <option>Select an Employees</option>
                                             {allUsers.map((user) => <option key={user.id} value={user.id} >{user.name}</option>)}
                                         </select>
@@ -209,7 +208,7 @@ const AddTask = () => {
                                 </button>
                             </div>
                             ) : (
-                                <div  className="flex items-center justify-center border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-lg shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 cursor-pointer ">
+                                <div className="flex items-center justify-center border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-lg shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 cursor-pointer ">
                                     <div className="  inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-[blue] border-e-transparent align-[-0.125em] text-primary motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
                                         <button className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">Loading...</button>
                                     </div>

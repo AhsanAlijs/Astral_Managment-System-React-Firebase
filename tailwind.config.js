@@ -9,13 +9,13 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        'sans': ['"Open Sans"', ...defaultTheme.fontFamily.sans],
+        'sans': ['"Poppins"', ...defaultTheme.fontFamily.sans],
       },
     },
-    screens: {
-      'xs': '650',
-      ...defaultTheme.screens,
-    }
+    // screens: {
+    //   'xs': '650',
+    //   ...defaultTheme.screens,
+    // }
   },
   plugins: [
     require('flowbite/plugin')
