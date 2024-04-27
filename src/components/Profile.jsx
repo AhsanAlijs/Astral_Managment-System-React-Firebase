@@ -1,36 +1,111 @@
-import { RiAtLine, RiMailLine, RiPhoneLine, RiUser3Line } from '@remixicon/react';
+import { RiAtLine, RiBriefcaseFill, RiCalendarFill, RiMailLine, RiMoneyDollarBoxFill, RiPassPendingFill, RiPhoneLine, RiShieldStarFill, RiSmartphoneFill, RiUser3Line, RiUserFill, RiUserLocationFill } from '@remixicon/react';
 import React from 'react';
+import { useAuth } from '../screens/AuthProvider';
 
-function ProfileComponent({ }) {
+function ProfileComponent() {
+
+    const { user } = useAuth();
+    console.log(user);
+
+
+
     return (
 
         <main className="max-w-screen-md mx-auto p-4">
-            <article className='mt-10  bg-gradient-to-b from-teal-800 to-teal-500 p-6 rounded-2xl shadow-xl '>
 
-                <div className="grid grid-cols-[1fr_3fr] gap-4 items-center justify-center">
-                    <div className="self-start">
-                        <img src="https://i.pinimg.com/originals/4a/5c/2f/4a5c2f2a828314d79432bb91afeb3ef3.jpg" alt="" className='size-44 overflow-hidden rounded-full object-cover shadow-xl  ' />
-                    </div>
 
-                    <div className='text-white space-y-1'>
-                        <p className="text-2xl font-bold flex items-center gap-2 ">
-                            <span><RiUser3Line size={24} /></span>
-                            Qamar Khan
-                        </p>
-                        <p className="text-xl font-medium flex items-center gap-2">
-                            <span><RiAtLine size={24} /></span>
-                            qamarkhan@gmail.com
-                        </p>
-                        <p className="font-medium flex items-center gap-2">
-                            <span>
-                                <RiPhoneLine size={24} />
+
+
+
+            <div className="max-w-4xl flex items-center h-auto lg:h-screen flex-wrap mx-auto my-32 lg:my-0">
+                <div id="profile" className="w-full lg:w-3/5 rounded-lg lg:rounded-l-lg lg:rounded-r-none shadow-2xl bg-white opacity-75 mx-6 lg:mx-0">
+
+                    <div className="p-4 md:p-12 text-center lg:text-left">
+
+                        <img src={user.imageUrl} alt="image" className='block lg:hidden object-cover rounded-full shadow-xl mx-auto -mt-16 h-48 w-48 bg-cover bg-center' />
+         
+                        <h1 className="text-3xl font-bold pt-8 lg:pt-0">{user.name} </h1>
+                        <div className="mx-auto lg:mx-0 w-4/5 pt-3 border-b-2 border-green-500 opacity-25"></div>
+                        <p className="pt-4 text-base font-bold flex items-center justify-center lg:justify-start">
+                            <span className="h-4 fill-current text-teal-700" >
+                                <RiAtLine size={24} />
                             </span>
-                            +923125458700
+                            {user.email}
+                        </p>
+                        <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
+                            <span className="h-4 fill-current text-teal-700">
+                                <RiUserLocationFill size={24} />
+                            </span>
+                            {user.address}
+                        </p>
+                        <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
+
+                            <span className='h-4 fill-current text-teal-700'><RiBriefcaseFill size={24} /></span>
+
+                            {user.PastExperience}
+                        </p>
+
+                        <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
+
+                            <span className="h-4 fill-current text-teal-700">
+                                <RiCalendarFill size={24} />
+                            </span>
+                            {user.joiningDate}
+                        </p>
+                        <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
+
+                            <span className="h-4 fill-current text-teal-700" >
+                                <RiSmartphoneFill size={24} />
+                            </span>
+
+                            {user.phoneNumber}
+                        </p>
+                        <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
+
+                            <span className="h-4 fill-current text-teal-700" >
+                                <RiShieldStarFill size={24} />
+                            </span>
+
+                            {user.qualification}
+                        </p>
+                        <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
+
+                            <span className="h-4 fill-current text-teal-700" >
+                                <RiPassPendingFill size={24} />
+                            </span>
+
+                            {user.registerId}
+                        </p>
+                        <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
+
+                            <span className='h-4 fill-current text-teal-700'>
+                                <RiMoneyDollarBoxFill size={24} />
+                            </span>
+                            {user.salary}
+                        </p>
+                        <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
+
+                            <span className="h-4 fill-current text-teal-700" >
+                                <RiUserFill size={24} />
+                            </span>
+                            {user.type}
                         </p>
                     </div>
-
                 </div>
-            </article>
+                <div className="w-full lg:w-2/5">
+                    <img src={user.imageUrl} className=" shadow-2xl hidden lg:block h-[25.5rem] object-cover " alt="profile" />
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
 
 
         </main>

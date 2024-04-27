@@ -5,8 +5,8 @@ import { useAuth } from '../../AuthProvider'
 const Profile = () => {
 
 
-  const { user } = useAuth();
-  console.log(user);
+// const user =  useAuth();
+// console.log(user);
 
 
 
@@ -16,7 +16,7 @@ const Profile = () => {
 
   return (
     <>
-      <ProfileComponent name={user.name} image={user.imageUrl} person={user.type} />
+      <ProfileComponent />
     </>
   )
 }

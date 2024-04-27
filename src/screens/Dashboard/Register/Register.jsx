@@ -21,12 +21,11 @@ const CreateEmployee = () => {
     address: '',
     qualification: '',
     position: '',
-    PastExperience: '',
+    pastExperience: '',
     joiningDate: '',
-    salary: ''
+    salary: '',
+    registerId: ''
   });
-
-
 
 
 
@@ -62,7 +61,6 @@ const CreateEmployee = () => {
   };
 
 
-  const navigate = useNavigate();
 
 
 
@@ -92,10 +90,15 @@ const CreateEmployee = () => {
                   type: register.type,
                   phoneNumber: register.phoneNumber,
                   imageUrl: url,
-                  // uid: user.uid
+                  address: register.address,
+                  qualification: register.qualification,
+                  position: register.position,
+                  PastExperience: register.pastExperience,
+                  joiningDate: register.joiningDate,
+                  salary: register.salary,
+                  registerId: register.registerId
                 });
-                // console.log("Document Added ", docRef.id);
-                navigate('/')
+
               } catch (e) {
                 console.error("Error adding document: ", e);
               }
@@ -147,7 +150,7 @@ const CreateEmployee = () => {
               Phone
             </label>
 
-            <input type="text" name="phone" id="phone" className="rounded border border-gray-300 bg-gray-50" placeholder="+920-000-000" required onChange={handleInput} />
+            <input type="text" name="phoneNumber" id="phone" className="rounded border border-gray-300 bg-gray-50" placeholder="+920-000-000" required onChange={handleInput} />
           </div>
 
           <div className="flex flex-col gap-2">
@@ -168,7 +171,6 @@ const CreateEmployee = () => {
               id="type"
               selected
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-
             >
               <option value="">Choose any one Type</option>
               <option value="Admin">Admin</option>
@@ -204,12 +206,29 @@ const CreateEmployee = () => {
                   <input name='qualification' type="text" id="Qualification" className="rounded border border-gray-300 bg-gray-50" placeholder="Qualification" required
                     onChange={handleInput} />
                 </div>
-                <div className="flex flex-col gap-2">
-                  <label htmlFor="Position">
-                    Position
+
+
+
+
+                <div>
+                  <label htmlFor="Position" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                    Select an Position
                   </label>
-                  <input name='position' type="text" id="Position" className="rounded border border-gray-300 bg-gray-50" placeholder="Position" required onChange={handleInput} />
+                  <select
+                    onChange={handleInput}
+                    name="Position"
+                    id="Position"
+                    selected
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  >
+                    <option value="">Choose any one Position</option>
+                    <option value="Web">Web</option>
+                    <option value="Sales">Sales</option>
+                    <option value="Graphics">Graphics</option>
+                    <option value="Ui/Ux Designer">Ui/Ux Designer</option>
+                  </select>
                 </div>
+
                 <div className="flex flex-col gap-2">
                   <label htmlFor="Past Experience">
                     Past Experience
@@ -223,29 +242,33 @@ const CreateEmployee = () => {
                   </label>
                   <input name='joiningDate' type="date" id="Joining Date" className="rounded border border-gray-300 bg-gray-50" placeholder="Joining Date" required onChange={handleInput} />
                 </div>
-                <div className="flex flex-col gap-2">
-                  <label htmlFor="Salary">
-                    Salary
-                  </label>
-                  <input name='salary' type="number" id="Salary" className="rounded border border-gray-300 bg-gray-50" min={0} maxLength={10} placeholder="Salary" required onChange={handleInput} />
+                <div className="grid grid-cols-1 sm:grid-cols-2 items-center gap-2">
+                  <div className="flex flex-col gap-2 ">
+                    <label htmlFor="Salary">
+                      Salary
+                    </label>
+                    <input name='salary' type="number" id="Salary" className="w-full rounded border border-gray-300 bg-gray-50" min={0} maxLength={10} placeholder="Salary" required onChange={handleInput} />
+                  </div>
+
+                  <div className="flex flex-col gap-2 ">
+                    <label htmlFor="Id">
+                      ID
+                    </label>
+                    <input name='registerId' type="text" id="id" className="w-full rounded border border-gray-300 bg-gray-50" min={0} maxLength={10} placeholder="#id" required onChange={handleInput} />
+                  </div>
+
                 </div>
+
               </>
             )
           }
         </div>
-        <div className='flex items-center justify-center flex-col mt-4'>
-          <div className="flex items-start mb-6 ">
-            <p className="text-sm font-light text-gray-500">
-              Already have an account yet?
-              <Link to="/" className="font-medium text-primary-600 hover:underline"  >Sign in</Link>
-            </p>
-          </div>
-
+        <div className='flex items-center justify-center mt-4'>
           <button type="submit"
             className="text-white bg-teal-500 hover:bg-teal-600 transition-colors rounded-lg px-6 py-3">Submit</button>
         </div>
-      </form>
-    </main>
+      </form >
+    </main >
   )
 }
 

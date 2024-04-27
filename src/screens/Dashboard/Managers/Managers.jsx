@@ -1,92 +1,39 @@
 import React, { useState } from 'react';
 
 import { RiDeleteBin2Fill, RiEdit2Fill } from '@remixicon/react';
+import { useEffect } from 'react';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { db } from '../../../config/firebase/firebaseConfig';
 
 const Managers = () => {
 
-    const managersTypeArray = ['Web', 'Sales', 'Graphics', 'Designer'];
+    const managersTypeArray = ['Web', 'Sales', 'Graphics', 'Ui/Ux Designer'];
 
     const [targetEmployee, setTargetEmployee] = useState('Web');
 
-    const managers = [
-        {
-            employeeName: 'abc',
-            employeeType: 'Web',
-            employeeEmail: 'abc@gmail.com',
-            State: 'Manager',
-        },
+    const [managerArray, setManagerArray] = useState([])
 
-        {
-            employeeName: 'abc',
-            employeeType: 'Web',
-            employeeEmail: 'abc@gmail.com',
-            State: 'Manager',
-        },
-        {
-            employeeName: 'abc',
-            employeeType: 'Web',
-            employeeEmail: 'abc@gmail.com',
-            State: 'Manager',
-        }, {
-            employeeName: 'abc',
-            employeeType: 'Web',
-            employeeEmail: 'abc@gmail.com',
-            State: 'Manager',
-        }, {
-            employeeName: 'abc',
-            employeeType: 'Web',
-            employeeEmail: 'abc@gmail.com',
-            State: 'Manager',
-        },
+    useEffect(() => {
+        getAllUsers()
+    }, [])
 
+    const getAllUsers = async () => {
 
+        try {
+            const q = query(collection(db, "users"), where("type", "==", "Manager"));
+            const querySnapshot = await getDocs(q);
 
+            querySnapshot.forEach((doc) => {
+                managerArray.push(doc.data())
+            });
 
-
-        {
-            employeeName: 'abc',
-            employeeType: 'Sales',
-            employeeEmail: 'abc@gmail.com',
-            State: 'Manager',
-        }, {
-            employeeName: 'abc',
-            employeeType: 'Graphics',
-            employeeEmail: 'abc@gmail.com',
-            State: 'Manager',
-        },
-
-        {
-            employeeName: 'abc',
-            employeeType: 'Graphics',
-            employeeEmail: 'abc@gmail.com',
-            State: 'Manager',
-        }, {
-            employeeName: 'abc',
-            employeeType: 'Graphics',
-            employeeEmail: 'abc@gmail.com',
-            State: 'Manager',
-        }, {
-            employeeName: 'abc',
-            employeeType: 'Graphics',
-            employeeEmail: 'abc@gmail.com',
-            State: 'Manager',
-        },
-
-
-
-        {
-            employeeName: 'abc',
-            employeeType: 'Designer',
-            employeeEmail: 'abc@gmail.com',
-            State: 'Manager',
-        },
-        {
-            employeeName: 'abc',
-            employeeType: 'Designer',
-            employeeEmail: 'abc@gmail.com',
-            State: 'Manager',
+        } catch (error) {
+            console.error('Error fetching data:', error);
         }
-    ];
+    }
+
+
+
 
 
     const [arr, setArr] = useState([]);
@@ -94,10 +41,10 @@ const Managers = () => {
 
     const getEmployee = (e) => {
         setTargetEmployee(e)
-        let abc = managers.filter((x, i) => x.employeeType == e)
+        let abc = managerArray.filter((x, i) => x.position == e)
         setArr([...abc])
     };
-    // console.log(arr)
+    
 
 
     return (
@@ -127,17 +74,6 @@ const Managers = () => {
                 </ul>
             </div>
 
-
-
-
-
-
-
-
-
-
-
-
             <div className="overflow-x-auto lg:overflow-hidden  rounded-lg border  border-gray-200 shadow-md bg-white mt-8">
                 {arr.length > 0 ?
                     <table className="w-full border-collapse bg-white text-left text-sm text-gray-500  ">
@@ -146,7 +82,7 @@ const Managers = () => {
                                 <th scope="col" className="px-6 py-4 font-medium text-gray-900">Name</th>
                                 <th scope="col" className="px-6 py-4 font-medium text-gray-900">State</th>
                                 <th scope="col" className="px-6 py-4 font-medium text-gray-900">Role</th>
-                                <th scope="col" className="px-6 py-4 font-medium text-gray-900">Team</th>
+                                <th scope="col" className="px-6 py-4 font-medium text-gray-900">Salary</th>
                                 <th scope="col" className="px-6 py-4 font-medium text-gray-900"></th>
                             </tr>
                         </thead>
@@ -158,27 +94,27 @@ const Managers = () => {
                                         <div className="relative h-10 w-10">
                                             <img
                                                 className="h-full w-full rounded-full object-cover object-center"
-                                                src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                                src={item.imageUrl}
                                                 alt=""
                                             />
                                             <span className="absolute right-0 bottom-0 h-2 w-2 rounded-full bg-green-400 ring ring-white"></span>
                                         </div>
                                         <div className="text-sm">
-                                            <div className="font-medium text-gray-700"> {item.employeeName} </div>
-                                            <div className="text-gray-400">{item.employeeEmail}</div>
+                                            <div className="font-medium text-gray-700"> {item.name} </div>
+                                            <div className="text-gray-400">{item.email}</div>
                                         </div>
                                     </th>
                                     <td className="px-6 py-4">
                                         <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600">
                                             <span className="h-1.5 w-1.5 rounded-full bg-green-600"></span>
-                                            {item.employeeType}
+                                            {item.position}
                                         </span>
                                     </td>
-                                    <td className="px-6 py-4">Product Designer</td>
+                                    <td className="px-6 py-4">{item.type}</td>
                                     <td className="px-6 py-4">
                                         <div className="flex gap-2">
                                             <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-1 text-xs font-semibold text-blue-600">
-                                                {item.State}
+                                               PKR {item.salary}
                                             </span>
 
                                         </div>
@@ -189,7 +125,7 @@ const Managers = () => {
                                                 <RiDeleteBin2Fill size={25} />
                                             </button>
 
-                                            <button data-tooltip="Edit">
+                                            <button onClick={edit}  data-tooltip="Edit">
                                                 <RiEdit2Fill size={25} />
                                             </button>
                                         </div>

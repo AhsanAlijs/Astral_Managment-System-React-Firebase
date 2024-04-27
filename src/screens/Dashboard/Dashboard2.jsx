@@ -1,17 +1,18 @@
 import { RiBarChartGroupedFill, RiCloseFill, RiMenuFill, RiProfileFill, RiUser2Fill, RiUserAddFill, RiUserStarFill } from "@remixicon/react";
-import { onAuthStateChanged, signOut } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
-import { useEffect, useRef, useState } from "react";
+import { signOut } from "firebase/auth";
+import { useRef } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
-import { auth, db } from "../../config/firebase/firebaseConfig";
+import { auth } from "../../config/firebase/firebaseConfig";
 import { useAuth } from "../AuthProvider";
-import { Menu, Button, Text, rem } from '@mantine/core';
 
 
 export default function Dashboard() {
     const ref = useRef();
 
 
+    const navigate = useNavigate()
+
+    const { user, setUser } = useAuth();
 
     const logOut = () => {
         signOut(auth).then(() => {
@@ -38,7 +39,7 @@ export default function Dashboard() {
                     <RiMenuFill size={30} />
                 </button>
 
-                <button className="px-4 py-2 bg-sky-400 hover:bg-sky-500 transition-colors text-white rounded-md font-semibold">
+                <button onClick={logOut} className="px-4 py-2 bg-sky-400 hover:bg-sky-500 transition-colors text-white rounded-md font-semibold">
                     Logout
                 </button>
             </div>
@@ -50,13 +51,13 @@ export default function Dashboard() {
                     </button>
 
                     <nav className="p-5 ">
-                        <div className='flex items-center bg-gradient-to-b from-teal-200 to-teal-50 rounded-md'>
+                        <div className='flex items-center gap-4 bg-gradient-to-b from-teal-200 to-teal-50 rounded-md p-2'>
                             <div>
-                                <img src="/logos.png" alt="" className="w-[70px] overflow-hidden" />
+                                <img src={user.imageUrl} alt="" className=" size-14 object-cover rounded-full overflow-hidden" />
                             </div>
                             <div className='flex items-center justify-center flex-col gap-[-2]' >
-                                <p className='text-lg font-bold text-teal-800'>John</p>
-                                <p className='text-slate-600'>Admin</p>
+                                <p className='text-lg font-bold text-teal-800'>{user.name} </p>
+                                <p className='text-slate-600'>{user.type}</p>
                             </div>
                         </div>
 

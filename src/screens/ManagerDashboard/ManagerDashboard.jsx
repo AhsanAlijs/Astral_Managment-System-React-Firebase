@@ -1,22 +1,22 @@
-import { RiCloseFill, RiMenuFill, RiProfileFill, RiTaskFill } from '@remixicon/react'
-import { signOut } from 'firebase/auth'
-import React, { useState } from 'react'
-import { Link, Outlet, useNavigate } from 'react-router-dom'
-import { auth } from '../../config/firebase/firebaseConfig'
-import { useAuth } from '../AuthProvider'
+import { RiBarChartGroupedFill, RiCloseFill, RiMenuFill, RiProfileFill, RiTaskFill, RiUser2Fill, RiUserAddFill, RiUserStarFill } from "@remixicon/react";
+import { signOut } from "firebase/auth";
+import { useRef } from "react";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import { auth } from "../../config/firebase/firebaseConfig";
+import { useAuth } from "../AuthProvider";
 
-const ManagerDashboard = () => {
 
-  const [asideOpen, setAsideOpen] = useState(false)
-  const [profileOpen, setProfileOpen] = useState(false)
+export default function Dashboard() {
+  const ref = useRef();
+
 
   const navigate = useNavigate()
-  const {user, setUser} = useAuth();
 
+  const { user, setUser } = useAuth();
 
   const logOut = () => {
     signOut(auth).then(() => {
-      setUser(null);
+      setUser(null)
       navigate('/')
 
     }).catch((error) => {
@@ -24,103 +24,68 @@ const ManagerDashboard = () => {
     });
   }
 
+  const openSideBar = () => {
+    ref.current.classList.toggle('max-lg:-translate-x-full');
+  }
+
   return (
-    <div>
-      <div>
-        <main className="max-w-screen-2xl mx-auto min-h-screen w-full text-gray-700" x-data="layout">
-          {/* header page */}
-          <header className="flex w-full items-center justify-between border-b-2 border-gray-200 bg-white p-2">
-            {/* logo */}
-            <div className="flex items-center space-x-2">
-              <button type="button" className="text-3xl  icon  " onClick={() => setAsideOpen(!asideOpen)}>
-                {asideOpen ? <RiCloseFill size={30} /> : <RiMenuFill size={30} />}
-              </button>
-            </div>
+    <>
+      <div className="w-full flex gap-2 justify-between items-center p-4 bg-teal-800">
+        <p className="font-bold text-3xl bg-gradient-to-b from-teal-50 to-teal-200 [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] max-lg:hidden uppercase [text-shadow:theme(textColor.teal.100)_2px_2px_2px;]">
+          Astral Developers
+        </p>
 
-            <div className=""><img src="/logos.png" alt="logo" className=" h-16" /></div>
-            {/* button profile */}
-            <div>
-              <button
-                type="button"
-                onClick={() => setProfileOpen(!profileOpen)}
-                // onClickOutside={() => setProfileOpen(false)}
-                className="overflow-hidden  rounded-full"
-              >
-                <img src={user.imageUrl} alt="plchldr.co" className="h-16 w-16" />
-              </button>
+        <button className="text-teal-300 lg:hidden" onClick={openSideBar}>
+          <RiMenuFill size={30} />
+        </button>
 
-              {/* dropdown profile */}
-              {profileOpen && (
-                <div className="absolute right-[10px] lg:right-[200px] mt-3 w-48 divide-y divide-gray-200 rounded-md border border-gray-200 bg-white shadow-md">
-                  <div className="flex items-center space-x-2 p-2">
-                    <img src={user.imageUrl} alt="plchldr.co" className="h-9 w-9 rounded-full" />
-                    <div className="font-medium">{user.name}</div>
-                  </div>
-
-                  <div className="flex flex-col space-y-3 p-2">
-
-                  </div>
-
-                  <div className="p-2">
-                    <button onClick={logOut} className="flex items-center space-x-2 transition hover:text-blue-600">
-                      <svg
-                        className="h-4 w-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                        ></path>
-                      </svg>
-                      <div >Log Out</div>
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-          </header>
-
-          <div className="flex min-h-[calc(100vh_-_60px)]">
-            {/* aside */}
-            <aside className={` transition-all ease-in flex w-72 mt-[5px] flex-col space-2  border-2 rounded-md mb-20  border-black-200 bg-white p-4 ${asideOpen ? '' : 'hidden'} translate-10 `}>
-
-              {/* sidebar header Start */}
-              <div className="mt-[5px]">
-                <header className="text-[20px] font-bold border-b-[1px]">Manager Dashboard</header>
-              </div>
-              {/* sidebar header End */}
-
-              <Link to={"/manager"} className="flex items-center space-x-1 rounded-md px-2 py-3 hover:bg-gray-100 hover:text-[gray]">
-                <span>
-                  <RiTaskFill />
-                </span>
-                <span className="text-[18px] font-[500]" >All Tasks</span>
-              </Link>
-
-              <Link to={'/manager/managerProfile'} className="flex items-center space-x-1 rounded-md px-2 py-3 hover:bg-gray-100 hover:text-[gray]">
-                <span>
-                  <RiProfileFill size={23} />
-                </span>
-                <span className="text-[18px] font-[500]" >Profile</span>
-              </Link>
-            </aside>
-
-            {/* main content page */}
-            <div className="w-full p-4">
-              <Outlet>
-
-              </Outlet>
-            </div>
-          </div>
-        </main>
+        <button onClick={logOut} className="px-4 py-2 bg-sky-400 hover:bg-sky-500 transition-colors text-white rounded-md font-semibold">
+          Logout
+        </button>
       </div>
-    </div>
+
+      <div className="grid grid-cols-[18%_auto] max-lg:grid-cols-1">
+        <div ref={ref} className=" w-full text-white bg-gradient-to-b from-teal-800 to-teal-400 min-h-[calc(100vh_-_72px)] max-lg:fixed max-lg:top-0 max-lg:inset-0 max-lg:z-50 max-lg:w-9/12 max-lg:max-w-xs max-lg:h-full max-lg:-translate-x-full transition-transform relative max-lg:pt-8">
+          <button className="text-teal-300 lg:hidden absolute  top-2 right-2" onClick={openSideBar}>
+            <RiCloseFill size={30} />
+          </button>
+
+          <nav className="p-5 ">
+            <div className='flex items-center gap-4 bg-gradient-to-b from-teal-200 to-teal-50 rounded-md p-2'>
+              <div>
+                <img src={user.imageUrl} alt="" className=" size-14 object-cover rounded-full overflow-hidden" />
+              </div>
+              <div className='flex items-center justify-center flex-col gap-[-2]' >
+                <p className='text-lg font-bold text-teal-800'>{user.name} </p>
+                <p className='text-slate-600'>{user.type}</p>
+              </div>
+            </div>
+
+            <ul className="flex flex-col gap-4 mt-4">
+              <Link to="/manager" className="flex gap-4 items-center hover:text-teal-300 transition-colors">
+                <span className='text-teal-300 '>
+                  <RiTaskFill size={24} />
+                </span>
+                <span>All Tasks</span>
+              </Link>
+
+              <Link to="/manager/managerProfile" className="flex gap-4 items-center hover:text-teal-300 transition-colors">
+                <span className='text-teal-300'>
+                  <RiProfileFill size={24} />
+                </span>
+                <span>Profile</span>
+              </Link>
+            </ul>
+          </nav>
+        </div>
+
+        <div className="bg-teal-800 min-h-[calc(100vh_-_72px)]">
+          <div className="rounded-tl-2xl max-lg:rounded-tr-2xl shadow-md bg-gradient-to-b from-teal-50 to-teal-100 h-full">
+            <Outlet />
+          </div>
+        </div>
+      </div>
+    </>
   )
 }
 
-export default ManagerDashboard

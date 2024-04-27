@@ -6,21 +6,21 @@ import ManagerTask from '../../../components/ManagerTask'
 
 const AllTasks = () => {
     return (
-        <>
+        <main className="max-w-screen-xl mx-auto p-4">
             <div className="flex items-center justify-start mb-3"  >
-                <Link to={'/manager/addTask'}  >
-                    <button className='border rounded-full hover:text-[white] p-2 hover:bg-[black] flex ' >
+                <Link Link to={'/manager/addTask'} >
+                    <button className=" flex items-center gap-2 w-full rounded-md bg-teal-700 text-white  py-2 px-4 font-semibold hover:bg-teal-800  transition-colors duration-150 ease-in-out" >
                         <RiDraftFill size={23} />
-                        <span className="text-[18px] font-[500]" >Add Task</span>
+                        Add Task
                     </button>
-                </Link>
-            </div>
+                </Link >
+            </div >
 
             {/* <Task /> */}
 
-            <ManagerTask />
+            < ManagerTask />
 
-        </>
+        </main >
 
     )
 }
