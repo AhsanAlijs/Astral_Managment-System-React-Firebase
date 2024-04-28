@@ -2,11 +2,15 @@ import { RiCheckDoubleLine, RiCloseLargeFill, RiEdit2Line } from '@remixicon/rea
 import { doc, setDoc } from 'firebase/firestore';
 import React, { useState } from 'react'
 import { db } from '../config/firebase/firebaseConfig';
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+
+const MySwal = withReactContent(Swal)
 
 const UserModal = ({ user, handleOutsideClick, closeModal }) => {
 
 
-    console.log(user);
+
 
 
 
@@ -19,26 +23,61 @@ const UserModal = ({ user, handleOutsideClick, closeModal }) => {
         email: user.email,
         phoneNumber: user.phoneNumber,
         type: user.type,
+        imageUrl: user.imageUrl,
         address: user.address,
         qualification: user.qualification,
         position: user.position,
-        PastExperience: user.PastExperience,
+        pastExperience: user.pastExperience,
         salary: user.salary,
         registerId: user.registerId
     });
-console.log(register);
-    console.log(register);
+
+
+
+
 
     const handleInput = (e) => {
         setRegister({ ...register, [e.target.name]: e.target.value })
     }
 
-    console.log(user.id);
+    function handleChange(e) {
+
+        setRegister({ ...register, type: e })
+    }
+
+    function handleChangePosition(e) {
+
+        setRegister({ ...register, position: e })
+    }
+
+
+
 
     const editData = async (e) => {
         e.preventDefault();
         const data = await setDoc(doc(db, "users", user.id), register);
-        console.log(data);
+
+        let timerInterval;
+        Swal.fire({
+            title: "Edit Successfully!",
+            html: "Edit in  <b></b> milliseconds.",
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                    timer.textContent = `${Swal.getTimerLeft()}`;
+                }, 100);
+            },
+            willClose: () => {
+                clearInterval(timerInterval);
+            }
+        }).then((result) => {
+            if (result.dismiss === Swal.DismissReason.timer) {
+                console.log("I was closed by the timer");
+            }
+        });
 
     }
 
@@ -115,7 +154,7 @@ console.log(register);
                                                     </label>
                                                     <select
                                                         value={register.type}
-                                                        onChange={handleInput}
+                                                        onChange={(e) => handleChange(e.target.value)}
                                                         name="option"
                                                         id="type"
                                                         selected
@@ -155,7 +194,7 @@ console.log(register);
                                                         </label>
                                                         <select
                                                             value={register.position}
-                                                            onChange={handleInput}
+                                                            onChange={(e) => handleChangePosition(e.target.value)}
                                                             name="Position"
                                                             id="Position"
                                                             selected
@@ -176,7 +215,7 @@ console.log(register);
                                                         <input value={register.pastExperience} name='pastExperience' type="text" id="Past Experience" className="rounded border border-gray-300 bg-gray-50" placeholder="Past Experience"
                                                             required onChange={handleInput} />
                                                     </div>
-                                                   
+
                                                     <div className="grid grid-cols-1 sm:grid-cols-2 items-center gap-2">
                                                         <div className="flex flex-col gap-2 ">
                                                             <label htmlFor="Salary">

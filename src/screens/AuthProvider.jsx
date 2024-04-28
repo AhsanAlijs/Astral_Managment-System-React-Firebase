@@ -22,7 +22,9 @@ const AuthProvider = ({ children }) => {
                 const docRef = doc(db, "users", currentUser.uid);
                 const docSnap = await getDoc(docRef);
                 if (docSnap.exists()) {
-                    setUser(docSnap.data())
+                    const user = { id: docRef.id, ...(docSnap.data()) }
+                    // console.log(user);
+                    setUser(user)
                 } else {
                     console.log("No such document!");
                 }
@@ -39,9 +41,9 @@ const AuthProvider = ({ children }) => {
 
         gsap.registerPlugin(ScrollTrigger);
 
-        gsap.to('.box', {
+        gsap.to(textStyle, {
             duration: 1,
-            rotation: '+=180deg',
+            rotation: '180deg',
             ease: 'bounce.in',
             stagger: {
                 amount: 1,
@@ -56,7 +58,6 @@ const AuthProvider = ({ children }) => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        // gap: '1px',
         height: '100vh',
         backgroundColor: 'rgb(255, 255, 255)',
         flexDirection: 'column'

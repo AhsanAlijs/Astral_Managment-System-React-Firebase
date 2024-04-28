@@ -25,7 +25,7 @@ const router = createBrowserRouter([
         element: <AuthProvider><Outlet /></AuthProvider>,
         loader: async () => {
             let user = null;
-            
+
             await auth.authStateReady();
             if (!auth.currentUser) return user;
             try {

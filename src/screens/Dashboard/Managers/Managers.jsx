@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 
-import { RiDeleteBin2Fill, RiEdit2Fill } from '@remixicon/react';
+import { RiDeleteBin2Fill, RiEdit2Fill, RiEdit2Line, RiInformationLine } from '@remixicon/react';
 import { useEffect } from 'react';
-import { collection, getDocs, query, where } from 'firebase/firestore';
-import { db } from '../../../config/firebase/firebaseConfig';
+import { collection, deleteDoc, doc, getDocs, query, where } from 'firebase/firestore';
+import { db, storage } from '../../../config/firebase/firebaseConfig';
+import UserModal from '../../../components/UserModal';
+import { deleteObject, ref as sRef } from "firebase/storage";
+import Swal from 'sweetalert2';
+
 
 const Managers = () => {
 
@@ -17,6 +21,62 @@ const Managers = () => {
         getAllUsers()
     }, [])
 
+
+    const [modalOpen, setModalOpen] = useState(false);
+    const [selectedUser, setSelectedUser] = useState(null);
+
+    const openModal = (item) => {
+        setModalOpen(true);
+        setSelectedUser(item);
+    };
+
+    const closeModal = () => {
+        setModalOpen(false);
+    };
+
+    const handleOutsideClick = (event) => {
+        if (event.target.id === 'modal') {
+            setModalOpen(false);
+        }
+    };
+
+
+    const deleteDocUser = async (user) => {
+        await deleteDoc(doc(db, "users", user.id));
+
+        const desertRef = sRef(storage, user.email);
+        try {
+            await deleteObject(desertRef);
+            console.log('File deleted successfully');
+        } catch (error) {
+            console.log('Uh-oh, an error occurred!', error);
+        }
+
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+        Toast.fire({
+            icon: "success",
+            title: "Deleted Successfully!"
+        });
+    }
+
+
+
+
+
+
+
+
+
     const getAllUsers = async () => {
 
         try {
@@ -24,7 +84,7 @@ const Managers = () => {
             const querySnapshot = await getDocs(q);
 
             querySnapshot.forEach((doc) => {
-                managerArray.push(doc.data())
+                managerArray.push({ id: doc.id, ...(doc.data()) })
             });
 
         } catch (error) {
@@ -44,7 +104,7 @@ const Managers = () => {
         let abc = managerArray.filter((x, i) => x.position == e)
         setArr([...abc])
     };
-    
+
 
 
     return (
@@ -75,6 +135,7 @@ const Managers = () => {
             </div>
 
             <div className="overflow-x-auto lg:overflow-hidden  rounded-lg border  border-gray-200 shadow-md bg-white mt-8">
+                {modalOpen && (<UserModal closeModal={closeModal} user={selectedUser} handleOutsideClick={handleOutsideClick} />)}
                 {arr.length > 0 ?
                     <table className="w-full border-collapse bg-white text-left text-sm text-gray-500  ">
                         <thead className="bg-gray-50">
@@ -114,19 +175,19 @@ const Managers = () => {
                                     <td className="px-6 py-4">
                                         <div className="flex gap-2">
                                             <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-1 text-xs font-semibold text-blue-600">
-                                               PKR {item.salary}
+                                                PKR {item.salary}
                                             </span>
 
                                         </div>
                                     </td>
                                     <td className="px-6 py-4">
                                         <div className="flex justify-end gap-4">
-                                            <button   >
+                                            <button onClick={(e) => deleteDocUser(item)}  >
                                                 <RiDeleteBin2Fill size={25} />
                                             </button>
 
-                                            <button onClick={edit}  data-tooltip="Edit">
-                                                <RiEdit2Fill size={25} />
+                                            <button className=" text-teal-500 " onClick={() => { openModal(item) }}>
+                                                <RiEdit2Line size={35} />
                                             </button>
                                         </div>
                                     </td>

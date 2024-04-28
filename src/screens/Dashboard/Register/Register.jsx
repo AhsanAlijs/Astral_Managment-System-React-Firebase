@@ -42,6 +42,11 @@ const CreateEmployee = () => {
   }
 
 
+  const handlePosition = (e) => {
+    setRegister({ ...register, position: e })
+  }
+
+
   // image preview is start
   const [previewImg, setPreviewImg] = useState("https://pixsector.com/cache/517d8be6/av5c8336583e291842624.png");
 
@@ -93,7 +98,7 @@ const CreateEmployee = () => {
                   address: register.address,
                   qualification: register.qualification,
                   position: register.position,
-                  PastExperience: register.pastExperience,
+                  pastExperience: register.pastExperience,
                   joiningDate: register.joiningDate,
                   salary: register.salary,
                   registerId: register.registerId
@@ -215,8 +220,8 @@ const CreateEmployee = () => {
                     Select an Position
                   </label>
                   <select
-                    onChange={handleInput}
-                    name="Position"
+                    onChange={(e) => handlePosition(e.target.value)}
+                    name="position"
                     id="Position"
                     selected
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"

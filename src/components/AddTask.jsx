@@ -1,12 +1,16 @@
 import { RiArrowLeftLine } from '@remixicon/react';
-import { collection, getDocs } from 'firebase/firestore';
+import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { db } from '../config/firebase/firebaseConfig';
+import { useAuth } from '../screens/AuthProvider';
 
 const AddTask = () => {
 
 
+    const { user } = useAuth();
+
+    
 
     const [notLoading, SetNotLoading] = useState(true);
 
@@ -25,6 +29,7 @@ const AddTask = () => {
         startDate: '',
         lastDate: '',
         assignee: [],
+        managerId: user.id
     });
 
 
@@ -37,19 +42,36 @@ const AddTask = () => {
 
 
     const getData = async () => {
-        const querySnapshot = await getDocs(collection(db, "users"));
-        const allUser = [];
-        querySnapshot.forEach((doc) => { allUser.push({ id: doc.id, ...(doc.data()) }); });
-        setAllUser(allUser)
+        try {
+            const q = query(collection(db, "users"), where("type", "==", "Employee"));
+            const querySnapshot = await getDocs(q);
+
+            querySnapshot.forEach((doc) => {
+                const allUser = []
+                allUser.push({ id: doc.id, ...(doc.data()) })
+                setAllUser(allUser)
+            });
+
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+
     }
+
+
+
+
+
 
 
 
 
     // console.log(allUsers);
 
-    const handleSubmit = () => {
-        console.log(formData);
+    const handleSubmit = async () => {
+        // console.log(formData);
+        const docRef = await addDoc(collection(db, "tasks"), formData);
+        console.log("Document written with ID:", docRef);
     }
 
 
@@ -67,13 +89,11 @@ const AddTask = () => {
         <>
             <section className="py-1 bg-blueGray-50">
                 <div className="w-full lg:w-8/12 px-4 mx-auto mt-6">
-                    <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0">
+                    <div className="relative flex flex-col min-w-0 break-words w-full mb-6 bg-white shadow-lg rounded-lg bg-blueGray-100 border-0">
 
                         <div className="flex items-center justify-start ml-7 "  >
-                            <Link to={'/manager'}  >
-                                <button className='border rounded-full hover:text-[white] hover:bg-[black]' >
-                                    <RiArrowLeftLine />
-                                </button>
+                            <Link to={-1} className='border rounded-full hover:text-[white] hover:bg-[black]' >
+                                <RiArrowLeftLine />
                             </Link>
                         </div>
 
@@ -99,7 +119,7 @@ const AddTask = () => {
                                               mb-2 text-[20px] font-medium" htmlFor="grid-password">
                                             Task Title
                                         </label>
-                                        <input onChange={(e) => setFormData({ ...formData, title: e.target.value })} name='title' type="text" className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-lg font-extrabold shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 font-[sans-pro-light]  " placeholder='Task title' />
+                                        <input onChange={(e) => setFormData({ ...formData, title: e.target.value })} name='title' type="text" className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-lg shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150   " placeholder='Task title' />
                                     </div>
                                 </div>
 
@@ -112,7 +132,7 @@ const AddTask = () => {
                                         <textarea
                                             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                                             name='description'
-                                            className="border-0 text-lg font-extrabold font-[sans-pro-light]  px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded  shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                            className="border-0 text-lg  px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded  shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                                             rows="4"
                                             placeholder='Task Details...'
                                         />
@@ -134,7 +154,7 @@ const AddTask = () => {
                                             onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
                                             name='date'
                                             type="Date"
-                                            className="text-lg font-extrabold font-[sans-pro-light] border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded  shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                            className="text-lg  border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded  shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                                         />
                                     </div>
                                 </div>
@@ -154,7 +174,7 @@ const AddTask = () => {
                                             onChange={(e) => setFormData({ ...formData, lastDate: e.target.value })}
                                             name='date'
                                             type="Date"
-                                            className="text-lg font-extrabold font-[sans-pro-light] border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded  shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                            className="text-lg  border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded  shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                                         />
                                     </div>
                                 </div>
@@ -175,6 +195,7 @@ const AddTask = () => {
                             <h6 className="text-blueGray-400 text-lg mt-3 mb-6 font-bold uppercase">
                                 Select Employee Assigned Task
                             </h6>
+
                             <div className="flex flex-wrap">
                                 <div className="w-full lg:w-12/12 px-4">
                                     <div className="relative w-full mb-3">
@@ -187,21 +208,21 @@ const AddTask = () => {
                                                 assigneeArr.push(items[i].getAttribute('value'))
                                             }
                                             setFormData({ ...formData, assignee: assigneeArr })
-                                        }} name='select' id="underline_select" className=" text-lg font-extrabold font-[sans-pro-light] border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded  shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" multiple>
+                                        }} name='select' id="underline_select" className=" text-lg  border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded  shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" multiple>
                                             <option>Select an Employees</option>
                                             {allUsers.map((user) => <option key={user.id} value={user.id} >{user.name}</option>)}
                                         </select>
                                     </div>
                                 </div>
                             </div>
+
                             {/* section 4 */}
 
 
                             {notLoading === true ? (<div className='flex items-center justify-center'>
                                 <button
-
                                     onClick={handleSubmit}
-                                    // type="submit"
+                                    type="submit"
                                     className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-lg shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                                 >
                                     Assign Task

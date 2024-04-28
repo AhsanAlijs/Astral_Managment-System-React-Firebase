@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { getDatabase, ref, set } from "firebase/database";
-
+import { deleteObject, ref as sRef } from "firebase/storage";
 import { RiDeleteBin2Fill, RiEdit2Fill, RiEdit2Line } from '@remixicon/react';
 import { useAuth } from '../../AuthProvider';
-import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
-import { db } from '../../../config/firebase/firebaseConfig';
+import { collection, deleteDoc, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
+import { db, storage } from '../../../config/firebase/firebaseConfig';
 import UserModal from '../../../components/UserModal';
+import { deleteUser } from 'firebase/auth';
+import Swal from 'sweetalert2';
 
 const Employee = () => {
 
@@ -40,6 +42,36 @@ const Employee = () => {
 
 
 
+
+    const deleteDocUser = async (e) => {
+        await deleteDoc(doc(db, "users", e.id));
+        const desertRef = sRef(storage, e.email);
+        try {
+            await deleteObject(desertRef);
+            console.log('File deleted successfully');
+        } catch (error) {
+            console.log('Uh-oh, an error occurred!', error);
+        }
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+        Toast.fire({
+            icon: "success",
+            title: "Deleted Successfully!"
+        });
+
+    }
+
+
+
     const [arr, setArr] = useState([]);
 
 
@@ -60,6 +92,7 @@ const Employee = () => {
 
     const closeModal = () => {
         setModalOpen(false);
+
     };
 
     const handleOutsideClick = (event) => {
@@ -73,16 +106,7 @@ const Employee = () => {
 
 
 
-    const edit = async (e) => {
-        // console.log(e);
-        // await setDoc(doc(db, "users", e.id), {
-        //     name: "",
-        //     email: "",
-        //     position: "",
-        //     type:'',
-        // });
 
-    }
 
 
     return (
@@ -114,7 +138,7 @@ const Employee = () => {
 
 
             <div className="overflow-x-auto lg:overflow-hidden  rounded-lg border  border-gray-200 shadow-md bg-white mt-8">
-            {modalOpen && (<UserModal closeModal={closeModal} user={selectedUser} handleOutsideClick={handleOutsideClick} />)}
+                {modalOpen && (<UserModal closeModal={closeModal} user={selectedUser} handleOutsideClick={handleOutsideClick} />)}
                 {arr.length > 0 ?
                     <table className="w-full border-collapse bg-white text-left text-sm text-gray-500  ">
                         <thead className="bg-gray-50">
@@ -161,11 +185,11 @@ const Employee = () => {
                                     </td>
                                     <td className="px-6 py-4">
                                         <div className="flex justify-end gap-4">
-                                            <button   >
+                                            <button onClick={(e) => deleteDocUser(item)}   >
                                                 <RiDeleteBin2Fill size={25} />
                                             </button>
 
-                                            <button className=" text-teal-500 " onClick={() => { openModal(item)}}>
+                                            <button className=" text-teal-500 " onClick={() => { openModal(item) }}>
                                                 <RiEdit2Line size={35} />
                                             </button>
                                         </div>
