@@ -1,10 +1,10 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
 import { onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
-import { auth, db } from '../config/firebase/firebaseConfig';
-import { useLoaderData } from 'react-router-dom';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { useLoaderData } from 'react-router-dom';
+import { auth, db } from '../config/firebase/firebaseConfig';
 
 const AuthContext = createContext(null)
 
@@ -23,7 +23,6 @@ const AuthProvider = ({ children }) => {
                 const docSnap = await getDoc(docRef);
                 if (docSnap.exists()) {
                     const user = { id: docRef.id, ...(docSnap.data()) }
-                    // console.log(user);
                     setUser(user)
                 } else {
                     console.log("No such document!");

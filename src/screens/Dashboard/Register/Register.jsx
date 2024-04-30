@@ -24,9 +24,13 @@ const CreateEmployee = () => {
     pastExperience: '',
     joiningDate: '',
     salary: '',
-    registerId: ''
+    registerId: '',
+    cvFile: '',
+    cnic: ''
   });
 
+
+  // console.log(register);
 
 
 
@@ -66,6 +70,24 @@ const CreateEmployee = () => {
   };
 
 
+  const [previewCv, setPreviewCv] = useState("https://i.etsystatic.com/42246844/r/il/947e50/4906906138/il_570xN.4906906138_kk2e.jpg");
+
+  const handleFileChangeCv = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    setRegister({ ...register, cvFile: file })
+
+
+    reader.onload = function (e) {
+      setPreviewCv(e.target.result);
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  };
+
+
 
 
 
@@ -74,48 +96,41 @@ const CreateEmployee = () => {
 
 
     createUserWithEmailAndPassword(auth, register.email, register.password)
-      .then((userCredential) => {
-        const user = userCredential.user;
+      .then(async (userCredential) => {
+        try {
+          const user = userCredential.user;
+          const file = register.file;
+          const cvFile = register.cvFile;
 
+          const avatarStorageRef = ref(storage, `${register.email}`);
+          const avatarSnapshot = await uploadBytes(avatarStorageRef, file)
+          const avatarUrl = await getDownloadURL(avatarSnapshot.ref)
 
-        const file = register.file;
+          const cvStorageRef = ref(storage, `/cv/${register.email}`);
+          const cvSnapshot = await uploadBytes(cvStorageRef, cvFile)
+          const cvUrl = await getDownloadURL(cvSnapshot.ref)
 
-        const storageRef = ref(storage, `${register.email}`);
-        return uploadBytes(storageRef, file)
-          .then(async (snapshot) => {
-            console.log('Upload successful!', snapshot);
-            try {
-              const url = await getDownloadURL(snapshot.ref)
-
-
-              try {
-                const docRef = await setDoc(doc(db, "users", user.uid), {
-                  name: register.name,
-                  email: register.email,
-                  type: register.type,
-                  phoneNumber: register.phoneNumber,
-                  imageUrl: url,
-                  address: register.address,
-                  qualification: register.qualification,
-                  position: register.position,
-                  pastExperience: register.pastExperience,
-                  joiningDate: register.joiningDate,
-                  salary: register.salary,
-                  registerId: register.registerId
-                });
-
-              } catch (e) {
-                console.error("Error adding document: ", e);
-              }
-
-            } catch (error) {
-              console.log(error);
-            }
-          })
-          .catch((error) => {
-            console.error('Error uploading image:', error);
-
+          const docRef = await setDoc(doc(db, "users", user.uid), {
+            name: register.name,
+            email: register.email,
+            type: register.type,
+            phoneNumber: register.phoneNumber,
+            imageUrl: avatarUrl,
+            address: register.address,
+            qualification: register.qualification,
+            position: register.position,
+            pastExperience: register.pastExperience,
+            joiningDate: register.joiningDate,
+            salary: register.salary,
+            registerId: register.registerId,
+            cnic: register.cnic,
+            cvUrl
           });
+
+        } catch (e) {
+          console.error("Error adding document: ", e);
+        }
+
 
       })
       .catch((error) => {
@@ -166,6 +181,26 @@ const CreateEmployee = () => {
             <input type="password" name="password" id="password" className="rounded border border-gray-300 bg-gray-50" placeholder="******" required onChange={handleInput} />
           </div>
 
+          <div className="flex flex-col gap-2">
+            <label htmlFor="cnic" className="">
+              Cnic
+            </label>
+
+            <input type="number" name="cnic" id="cnic" className="rounded border border-gray-300 bg-gray-50" placeholder="42101-1587491-7" required onChange={handleInput} />
+          </div>
+
+          <div className="flex gap-2 items-center overflow-hidden">
+            <div className="shrink-0">
+              <img id='preview_img' className="size-14 border object-cover rounded-full" src={previewCv} alt="Current profile photo" />
+            </div>
+            <label className="">
+              <span className="sr-only">Choose profile photo</span>
+              <input name='file' type="file" onChange={handleFileChangeCv} className="file:bg-teal-600 " />
+            </label>
+          </div>
+
+
+
           <div>
             <label htmlFor="type" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
               Select an option
@@ -188,7 +223,6 @@ const CreateEmployee = () => {
             <div className="shrink-0">
               <img id='preview_img' className="size-14 border object-cover rounded-full" src={previewImg} alt="Current profile photo" />
             </div>
-
             <label className="">
               <span className="sr-only">Choose profile photo</span>
               <input name='file' type="file" onChange={handleFileChange} className="file:bg-teal-600 " />

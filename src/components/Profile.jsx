@@ -5,9 +5,6 @@ import { useAuth } from '../screens/AuthProvider';
 function ProfileComponent() {
 
     const { user } = useAuth();
-    console.log(user);
-
-
 
     return (
 
@@ -22,74 +19,113 @@ function ProfileComponent() {
 
                     <div className="p-4 md:p-12 text-center lg:text-left">
 
-                        <img src={user.imageUrl} alt="image" className='block lg:hidden object-cover rounded-full shadow-xl mx-auto -mt-16 h-48 w-48 bg-cover bg-center' />
-         
-                        <h1 className="text-3xl font-bold pt-8 lg:pt-0">{user.name} </h1>
-                        <div className="mx-auto lg:mx-0 w-4/5 pt-3 border-b-2 border-green-500 opacity-25"></div>
-                        <p className="pt-4 text-base font-bold flex items-center justify-center lg:justify-start">
-                            <span className="h-4 fill-current text-teal-700" >
-                                <RiAtLine size={24} />
-                            </span>
-                            {user.email}
-                        </p>
-                        <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
-                            <span className="h-4 fill-current text-teal-700">
-                                <RiUserLocationFill size={24} />
-                            </span>
-                            {user.address}
-                        </p>
-                        <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
+                        {user.type === "Admin" ?
+                            <>
+                                <img src={user.imageUrl} alt="image" className='block lg:hidden object-cover rounded-full shadow-xl mx-auto -mt-16 h-48 w-48 bg-cover bg-center' />
 
-                            <span className='h-4 fill-current text-teal-700'><RiBriefcaseFill size={24} /></span>
+                                <h1 className="text-3xl font-bold pt-8 lg:pt-0">{user.name} </h1>
+                                <div className="mx-auto lg:mx-0 w-4/5 pt-3 border-b-2 border-green-500 opacity-25"></div>
+                                <p className="pt-4 text-base font-bold flex items-center justify-center lg:justify-start">
+                                    <span className="h-4 fill-current text-teal-700" >
+                                        <RiAtLine size={24} />
+                                    </span>
+                                    {user.email}
+                                </p>
+                                <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
 
-                            {user.PastExperience}
-                        </p>
+                                    <span className="h-4 fill-current text-teal-700" >
+                                        <RiSmartphoneFill size={24} />
+                                    </span>
 
-                        <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
+                                    {user.phoneNumber}
+                                </p>
+                                <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
 
-                            <span className="h-4 fill-current text-teal-700">
-                                <RiCalendarFill size={24} />
-                            </span>
-                            {user.joiningDate}
-                        </p>
-                        <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
+                                    <span className="h-4 fill-current text-teal-700" >
+                                        <RiUserFill size={24} />
+                                    </span>
+                                    {user.type}
+                                </p>
+                            </> :
+                            <>
+                                <img src={user.imageUrl} alt="image" className='block lg:hidden object-cover rounded-full shadow-xl mx-auto -mt-16 h-48 w-48 bg-cover bg-center' />
 
-                            <span className="h-4 fill-current text-teal-700" >
-                                <RiSmartphoneFill size={24} />
-                            </span>
+                                <h1 className="text-3xl font-bold pt-8 lg:pt-0">{user.name} </h1>
+                                <div className="mx-auto lg:mx-0 w-4/5 pt-3 border-b-2 border-green-500 opacity-25"></div>
+                                <p className="pt-4 text-base font-bold flex items-center justify-center lg:justify-start">
+                                    <span className="h-4 fill-current text-teal-700" >
+                                        <RiAtLine size={24} />
+                                    </span>
+                                    {user.email}
+                                </p>
+                                <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
 
-                            {user.phoneNumber}
-                        </p>
-                        <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
+                                    <span className="h-4 fill-current text-teal-700" >
+                                        <RiSmartphoneFill size={24} />
+                                    </span>
 
-                            <span className="h-4 fill-current text-teal-700" >
-                                <RiShieldStarFill size={24} />
-                            </span>
+                                    {user.phoneNumber}
+                                </p>
+                                <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
 
-                            {user.qualification}
-                        </p>
-                        <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
+                                    <span className="h-4 fill-current text-teal-700" >
+                                        <RiUserFill size={24} />
+                                    </span>
+                                    {user.type}
+                                </p>
+                                <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
+                                    <span className="h-4 fill-current text-teal-700">
+                                        <RiUserLocationFill size={24} />
+                                    </span>
+                                    {user.address}
+                                </p>
+                                <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
 
-                            <span className="h-4 fill-current text-teal-700" >
-                                <RiPassPendingFill size={24} />
-                            </span>
+                                    <span className='h-4 fill-current text-teal-700'><RiBriefcaseFill size={24} /></span>
 
-                            {user.registerId}
-                        </p>
-                        <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
+                                    {user.PastExperience}
+                                </p>
 
-                            <span className='h-4 fill-current text-teal-700'>
-                                <RiMoneyDollarBoxFill size={24} />
-                            </span>
-                            {user.salary}
-                        </p>
-                        <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
+                                <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
 
-                            <span className="h-4 fill-current text-teal-700" >
-                                <RiUserFill size={24} />
-                            </span>
-                            {user.type}
-                        </p>
+                                    <span className="h-4 fill-current text-teal-700">
+                                        <RiCalendarFill size={24} />
+                                    </span>
+                                    {user.joiningDate}
+                                </p>
+
+                                <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
+
+                                    <span className="h-4 fill-current text-teal-700" >
+                                        <RiShieldStarFill size={24} />
+                                    </span>
+
+                                    {user.qualification}
+                                </p>
+                                <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
+
+                                    <span className="h-4 fill-current text-teal-700" >
+                                        <RiPassPendingFill size={24} />
+                                    </span>
+
+                                    {user.registerId}
+                                </p>
+                                <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
+
+                                    <span className='h-4 fill-current text-teal-700'>
+                                        <RiMoneyDollarBoxFill size={24} />
+                                    </span>
+                                    {user.salary}
+                                </p>
+                            </>
+                        }
+
+
+
+
+
+
+
                     </div>
                 </div>
                 <div className="w-full lg:w-2/5">

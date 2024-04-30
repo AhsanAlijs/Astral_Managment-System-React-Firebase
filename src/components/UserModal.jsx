@@ -31,6 +31,7 @@ const UserModal = ({ user, handleOutsideClick, closeModal }) => {
         salary: user.salary,
         registerId: user.registerId
     });
+    
 
 
 
@@ -230,31 +231,12 @@ const UserModal = ({ user, handleOutsideClick, closeModal }) => {
                                                             </label>
                                                             <input value={register.registerId} name='registerId' type="text" id="id" className="w-full rounded border border-gray-300 bg-gray-50" min={0} maxLength={10} placeholder="#id" required onChange={handleInput} />
                                                         </div>
-
                                                     </div>
-
                                                 </>
-
-
                                             </div>
-
                                         </form >
-
-
-
-
-
-
-
-
-
-
-
-
                                     </div>
                                 </section >
-
-
                             </div>
                             <div className=" flex  items-center justify-center gap-10 px-4 py-3">
 

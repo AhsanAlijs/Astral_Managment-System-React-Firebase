@@ -1,54 +1,151 @@
-import React from 'react'
+import { collection, doc, getDocs, query, updateDoc, where } from 'firebase/firestore';
+import React, { useEffect, useState } from 'react';
+import { db } from '../../../config/firebase/firebaseConfig';
+import { useAuth } from '../../AuthProvider';
 
 const EmployeeTasks = () => {
+    const { user } = useAuth();
+    const [task, setTask] = useState([]);
+    const [taskUser, setTaskUser] = useState([]);
+
+    const getData = async () => {
+        if (!user.id) return
+
+        try {
+            const q = query(collection(db, "tasks"), where("assignee", "array-contains", user.id));
+            const taskSnapshot = await getDocs(q);
+
+            const allUserTasks = []
+
+            taskSnapshot.forEach(async (doc) => {
+                const taskData = doc.data()
+
+
+
+                const users = query(collection(db, "users"));
+                const userSnapshot = await getDocs(users);
+                
+                const taskUser = []
+
+                userSnapshot.forEach((users) => {
+                    const userData = users.data();
+
+                    if (taskData.assignee.includes(users.id)) {
+                        taskUser.push({ id: users.id, ...userData });
+                    }
+                });
+
+
+                allUserTasks.push({ ...taskData, id: doc.id, assignee: taskUser })
+
+                setTask(allUserTasks)
+            });
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+
+
+    // console.log(taskUser);
+
+    useEffect(() => {
+        getData()
+    }, [])
+
+
+
+
+    const [taskStatus, setTaskStatus] = useState();
+
+
+
+    const status = async (item) => {
+        const washingtonRef = doc(db, "tasks", item.id);
+        let status;
+        if (item.status === 'Pending') {
+            status = 'Completed'
+        } else {
+            status = 'Pending'
+        }
+
+        // Set the "capital" field of the city 'DC'
+        await updateDoc(washingtonRef, {
+            status
+        });
+        // console.log('status change successfully');
+    }
+
+
+
+
+    if (!task) {
+        return null
+    }
+
     return (
         <>
-            
+
             <main className="max-w-screen-2xl mx-auto p-2">
                 <div className="mt-10 max-w-screen-md mx-auto">
                     <ul className="flex flex-col gap-5">
-                        <li>
-                            <article className="border p-6 rounded-md shadow-md">
-                                <div className="flex justify-between items-center">
-                                    <h2 className="text-2xl font-bold text-neutral-800">
-                                        Task title
-                                    </h2>
-                                    <p className="px-2 py-1 rounded-full bg-yellow-200 text-yellow-800 text-xs font-medium">
-                                        Pending
-                                    </p>
-                                </div>
 
-                                <div className="text-sm flex gap-6 text-neutral-500 mt-2">
-                                    <time>21/06/2023</time>
-                                    -
-                                    <time>21/06/2023</time>
-                                </div>
+                        {task.map((item) => {
+                            return (
+                                <li key={item.id} >
+                                    <article className="border p-6 rounded-md shadow-md">
+                                        <div className="flex justify-between items-center">
+                                            <h2 className="text-2xl font-bold text-neutral-800">
+                                                {item.title}
+                                            </h2>
 
-                                <p className="mt-6">
-                                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Totam, tenetur ipsum. Quia non explicabo repudiandae ipsum ipsam sunt quidem laboriosam!
-                                </p>
+                                            {item.status === 'Pending' ? <p key={item.id} className="px-2 py-1 rounded-full bg-yellow-200 text-yellow-800 text-xs font-medium">
+                                                {item.status}
+                                            </p> : <p className="px-2 py-1 rounded-full bg-green-200 text-green-800 text-xs font-medium">
+                                                {item.status}
+                                            </p>}
 
-                                <p className="mt-4 flex gap-4 items-center">
-                                    <img src="/logo.png" alt="" className="size-12 rounded-full overflow-hidden" />
-                                    <span>
-                                        Manager name
-                                    </span>
-                                </p>
+                                        </div>
 
-                                <ul className="text-sm flex flex-col gap-1 list-disc list-inside mt-4 [&_p]:inline">
-                                    <li>
-                                        <p>Employee 1</p>
-                                    </li>
-                                    <li>
-                                        <p>Employee 2</p>
-                                    </li>
-                                    <li>
-                                        <p>Employee 3</p>
-                                    </li>
-                                </ul>
+                                        <div className="text-sm flex gap-6 text-neutral-500 mt-2">
+                                            <time>{item.startDate}</time>
+                                            -
+                                            <time>{item.lastDate}</time>
+                                        </div>
 
-                            </article>
-                        </li>
+                                        <p className="mt-6">
+                                            {item.description}
+                                        </p>
+
+                                        <p className="mt-4 flex gap-4 items-center">
+                                            <img src="/logo.png" alt="" className="size-12 rounded-full overflow-hidden" />
+                                            <span>
+                                                {item.managerName}
+                                            </span>
+                                        </p>
+
+                                        <ul className="text-sm flex flex-col gap-1 list-disc list-inside mt-4 [&_p]:inline">
+                                            {
+                                                item.assignee.map((s) => (
+                                                    <div>
+                                                        <li>
+                                                            <p>{s.name}</p>
+                                                        </li>
+                                                    </div>
+                                                ))
+                                            }
+                                        </ul>
+
+                                        <div className='flex items-center justify-end '>
+                                            <button onClick={(e) => status(item)} className='px-2 py-1 rounded-full bg-teal-800 text-white text-xs font-medium  '>Task Completed</button>
+
+                                        </div>
+
+                                    </article>
+                                </li>
+                            )
+                        })}
+
+
 
                     </ul>
                 </div>

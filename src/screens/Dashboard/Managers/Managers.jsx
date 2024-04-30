@@ -124,7 +124,7 @@ const Managers = () => {
                             <li key={index} className=''  >
                                 <div className='bg-gradient-to-r from-teal-500 to-50% to-transparent pb-[2px] hover:bg-teal-500 transition-colors 
                                 ease-in-out ' >
-                                    <button onClick={() => getEmployee(item)} className="pb-2  bg-[#ecfafa] text-xl font-semibold  uppercase  
+                                    <button onClick={() => getEmployee(item)} className="pb-2  bg-[#ecfafa] text-base font-semibold  uppercase  
              ">                     {item}
                                     </button>
                                 </div>

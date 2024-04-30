@@ -1,17 +1,67 @@
 import { RiCheckDoubleLine, RiCloseLargeFill, RiEdit2Line } from '@remixicon/react';
+import { doc, setDoc } from 'firebase/firestore';
+import { useState } from 'react';
+import { db } from '../config/firebase/firebaseConfig';
+import Swal from 'sweetalert2';
 
-const Modal = ( {closeModal , handleOutsideClick} ) => {
+const Modal = ({ closeModal, handleOutsideClick, task }) => {
 
-    
+    console.log(task.id);
+
+
+    const [formData, setFormData] = useState({
+        title: task.title,
+        description: task.description,
+        startDate: task.startDate,
+        lastDate: task.lastDate,
+        assignee: task.assignee,
+        status: task.status,
+        managerId: task.managerId,
+    });
+
+    console.log(formData);
+
+
+
+    const editData = async (e) => {
+        e.preventDefault();
+        const data = await setDoc(doc(db, "tasks", task.id), formData);
+        console.log(data);
+
+        let timerInterval;
+        Swal.fire({
+            title: "Edit Successfully!",
+            html: "Edit in  <b></b> milliseconds.",
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                    timer.textContent = `${Swal.getTimerLeft()}`;
+                }, 100);
+            },
+            willClose: () => {
+                clearInterval(timerInterval);
+            }
+        }).then((result) => {
+            if (result.dismiss === Swal.DismissReason.timer) {
+                console.log("I was closed by the timer");
+            }
+        });
+
+    }
+
+
+
+
+
+
+
 
     return (
         <>
             <div className='max-w-screen-xl mx-auto p-4'>
-
-
-
-
-
                 <div className="  fixed inset-0 bg-gray-600 bg-opacity-50  h-full w-full" id="modal" onClick={handleOutsideClick}>
                     <div className="relative top-20 mx-auto p-5 border w-[98%]  max-w-screen-lg shadow-lg rounded-md bg-gradient-to-bl from-teal-100 to-teal-200 ">
                         <div className="mt-3 text-center">
@@ -29,15 +79,16 @@ const Modal = ( {closeModal , handleOutsideClick} ) => {
                                         </div>
 
 
-                                        <form className='flex flex-wrap' >
+                                        <form onSubmit={editData} id='editTask' className='flex flex-wrap' >
                                             <div className="w-full  lg:w-12/12 px-4">
                                                 <div className="relative lg:w-full mb-3">
                                                     <label className="block uppercase text-blueGray-600 mb-2 text-[20px] font-medium" htmlFor="grid-password">
                                                         Edit Task Title
                                                     </label>
                                                     <input
-                                                        onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                                                        name='description'
+                                                        value={formData.title}
+                                                        onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                                                        name='title'
                                                         className="border-0 text-lg   px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded  shadow focus:outline-none focus:ring w-full  ease-linear transition-all duration-150"
                                                         rows="4"
                                                         placeholder='Edit Task Title'
@@ -45,12 +96,14 @@ const Modal = ( {closeModal , handleOutsideClick} ) => {
                                                 </div>
                                             </div>
 
+
                                             <div className="w-full lg:w-12/12 px-4">
                                                 <div className="relative w-full mb-3">
                                                     <label className="block uppercase text-blueGray-600 mb-2 text-[20px] font-medium" htmlFor="grid-password">
                                                         Edit Task Details
                                                     </label>
                                                     <textarea
+                                                        value={formData.description}
                                                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                                                         name='description'
                                                         className="border-0  px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded  shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
@@ -58,7 +111,33 @@ const Modal = ( {closeModal , handleOutsideClick} ) => {
                                                         placeholder='Edit Task Details...'
                                                     />
                                                 </div>
-                                            </div></form>
+                                            </div>
+
+
+                                            <div className="w-full  lg:w-12/12 px-4">
+                                                <div className="relative lg:w-full mb-3">
+                                                    <label className="block uppercase text-blueGray-600 mb-2 text-[20px] font-medium" htmlFor="grid-password">
+                                                        Edit Task LastDate
+                                                    </label>
+                                                    <input
+                                                        type="Date"
+                                                        value={formData.lastDate}
+                                                        onChange={(e) => setFormData({ ...formData, lastDate: e.target.value })}
+                                                        name='title'
+                                                        className="border-0 text-lg   px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded  shadow focus:outline-none focus:ring w-full  ease-linear transition-all duration-150"
+                                                        rows="4"
+                                                        placeholder='Edit Task Title'
+                                                    />
+                                                </div>
+                                            </div>
+
+
+
+
+
+
+
+                                        </form>
                                     </div>
                                 </section >
 
@@ -66,7 +145,7 @@ const Modal = ( {closeModal , handleOutsideClick} ) => {
                             </div>
                             <div className=" flex  items-center justify-center gap-10 px-4 py-3">
 
-                                <button id="ok-btn" className=" rounded-md bg-teal-700 text-white  py-2 px-4 font-semibold hover:bg-teal-800  transition-colors duration-150 ease-in-out">
+                                <button type='submit' form='editTask' id="ok-btn" className=" rounded-md bg-teal-700 text-white  py-2 px-4 font-semibold hover:bg-teal-800  transition-colors duration-150 ease-in-out">
                                     <RiCheckDoubleLine size={25} />
                                 </button>
 

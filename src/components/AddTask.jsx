@@ -10,7 +10,7 @@ const AddTask = () => {
 
     const { user } = useAuth();
 
-    
+
 
     const [notLoading, SetNotLoading] = useState(true);
 
@@ -29,8 +29,11 @@ const AddTask = () => {
         startDate: '',
         lastDate: '',
         assignee: [],
-        managerId: user.id
+        status: 'pending',
+        managerId: user.id,
+        managerName: user.name
     });
+
 
 
     const [allUsers, setAllUser] = useState([]);
@@ -46,8 +49,8 @@ const AddTask = () => {
             const q = query(collection(db, "users"), where("type", "==", "Employee"));
             const querySnapshot = await getDocs(q);
 
+            const allUser = []
             querySnapshot.forEach((doc) => {
-                const allUser = []
                 allUser.push({ id: doc.id, ...(doc.data()) })
                 setAllUser(allUser)
             });
@@ -66,12 +69,10 @@ const AddTask = () => {
 
 
 
-    // console.log(allUsers);
+
 
     const handleSubmit = async () => {
-        // console.log(formData);
         const docRef = await addDoc(collection(db, "tasks"), formData);
-        console.log("Document written with ID:", docRef);
     }
 
 
@@ -204,7 +205,7 @@ const AddTask = () => {
                                             let items = e.target.selectedOptions;
                                             let assigneeArr = [];
                                             for (let i = 0; i < items.length; i++) {
-                                                console.log(items[i].getAttribute('value'))
+                                                // console.log(items[i].getAttribute('value'))
                                                 assigneeArr.push(items[i].getAttribute('value'))
                                             }
                                             setFormData({ ...formData, assignee: assigneeArr })
