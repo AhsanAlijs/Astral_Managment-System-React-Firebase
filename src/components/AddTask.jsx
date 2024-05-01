@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { db } from '../config/firebase/firebaseConfig';
 import { useAuth } from '../screens/AuthProvider';
+import Swal from 'sweetalert2';
 
 const AddTask = () => {
 
@@ -29,7 +30,7 @@ const AddTask = () => {
         startDate: '',
         lastDate: '',
         assignee: [],
-        status: 'pending',
+        status: 'notreceive',
         managerId: user.id,
         managerName: user.name
     });
@@ -55,6 +56,8 @@ const AddTask = () => {
                 setAllUser(allUser)
             });
 
+
+
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -73,6 +76,13 @@ const AddTask = () => {
 
     const handleSubmit = async () => {
         const docRef = await addDoc(collection(db, "tasks"), formData);
+        formData.reset.value
+        Swal.fire({
+            title: "Add task",
+            text: "Task successfully assign",
+            icon: "success"
+        });
+
     }
 
 
@@ -87,18 +97,18 @@ const AddTask = () => {
 
 
     return (
-        <>
+        <main className='max-w-screen-xl mx-auto p-4'>
             <section className="py-1 bg-blueGray-50">
                 <div className="w-full lg:w-8/12 px-4 mx-auto mt-6">
-                    <div className="relative flex flex-col min-w-0 break-words w-full mb-6 bg-white shadow-lg rounded-lg bg-blueGray-100 border-0">
+                    <div className="relative flex flex-col min-w-0 break-words w-full mb-6 bg-[#e8f9f9] shadow-lg rounded-lg bg-blueGray-100 border-0">
 
-                        <div className="flex items-center justify-start ml-7 "  >
-                            <Link to={-1} className='border rounded-full hover:text-[white] hover:bg-[black]' >
+                        <div className="flex items-center justify-start p-4 "  >
+                            <Link to={-1} className='rounded-full hover:text-[white] hover:bg-teal-800' >
                                 <RiArrowLeftLine />
                             </Link>
                         </div>
 
-                        <div className="rounded-t bg-white mb-0 px-6 py-6">
+                        <div className="rounded-t  mb-0 px-6 py-6">
                             <div className="text-center flex justify-between">
                                 <h6 className="text-blueGray-700 text-xl font-bold">
                                     Add Tasks
@@ -224,7 +234,7 @@ const AddTask = () => {
                                 <button
                                     onClick={handleSubmit}
                                     type="submit"
-                                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-lg shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                    className="border-0 rounded-md w-full placeholder-blueGray-300 text-blueGray-60 bg-teal-700 text-white  py-2 px-4 font-semibold hover:bg-teal-800 "
                                 >
                                     Assign Task
                                 </button>
@@ -256,7 +266,7 @@ const AddTask = () => {
                     </footer>
                 </div >
             </section >
-        </>
+        </main>
     )
 }
 

@@ -11,9 +11,9 @@ import Swal from 'sweetalert2';
 
 const Managers = () => {
 
-    const managersTypeArray = ['Web', 'Sales', 'Graphics', 'Ui/Ux Designer'];
+    const managersTypeArray = ['Development', 'Sales', 'Graphics', 'Ui/Ux Designer'];
 
-    const [targetEmployee, setTargetEmployee] = useState('Web');
+    const [targetEmployee, setTargetEmployee] = useState('Development');
 
     const [managerArray, setManagerArray] = useState([])
 
@@ -41,33 +41,6 @@ const Managers = () => {
     };
 
 
-    const deleteDocUser = async (user) => {
-        await deleteDoc(doc(db, "users", user.id));
-
-        const desertRef = sRef(storage, user.email);
-        try {
-            await deleteObject(desertRef);
-            console.log('File deleted successfully');
-        } catch (error) {
-            console.log('Uh-oh, an error occurred!', error);
-        }
-
-        const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
-            }
-        });
-        Toast.fire({
-            icon: "success",
-            title: "Deleted Successfully!"
-        });
-    }
 
 
 
@@ -93,6 +66,34 @@ const Managers = () => {
     }
 
 
+    const deleteDocUser = async (user) => {
+        await deleteDoc(doc(db, "users", user.id));
+
+        const desertRef = sRef(storage, user.email);
+        try {
+            await deleteObject(desertRef);
+        } catch (error) {
+            console.log('Uh-oh, an error occurred!', error);
+        }
+        getAllUsers()
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+        Toast.fire({
+            icon: "success",
+            title: "Deleted Successfully!"
+        });
+    }
+
+
 
 
 
@@ -101,7 +102,7 @@ const Managers = () => {
 
     const getEmployee = (e) => {
         setTargetEmployee(e)
-        let abc = managerArray.filter((x, i) => x.position == e)
+        let abc = managerArray.filter((x, i) => x.department == e)
         setArr([...abc])
     };
 
@@ -122,10 +123,11 @@ const Managers = () => {
                     {managersTypeArray.map((item, index) => {
                         return (
                             <li key={index} className=''  >
-                                <div className='bg-gradient-to-r from-teal-500 to-50% to-transparent pb-[2px] hover:bg-teal-500 transition-colors 
-                                ease-in-out ' >
-                                    <button onClick={() => getEmployee(item)} className="pb-2  bg-[#ecfafa] text-base font-semibold  uppercase  
-             ">                     {item}
+                                <div className='bg-gradient-to-r from-teal-500 to-0% to-transparent pb-[2px] hover:bg-teal-500
+                                 transition-colors duration-300 ease-in-out ' >
+                                    <button onClick={() => getEmployee(item)}
+                                        className="pb-2  bg-[#ecfafa] text-base font-semibold  uppercase  ">
+                                        {item}
                                     </button>
                                 </div>
                             </li>

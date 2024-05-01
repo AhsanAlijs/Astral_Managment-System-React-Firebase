@@ -18,6 +18,7 @@ import AuthProvider from '../../screens/AuthProvider';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth, db } from '../firebase/firebaseConfig';
 import { doc, getDoc } from 'firebase/firestore';
+import ForgotPassword from '../../screens/ForgotPassword/ForgotPassword';
 
 const router = createBrowserRouter([
     {
@@ -43,6 +44,7 @@ const router = createBrowserRouter([
         },
         children: [
             { index: true, element: <Login /> },
+            { path: 'password-reset', element: <ForgotPassword /> },
             {
                 path: 'dashboard',
                 element: <ProtectedRouts type='Admin' component={<Dashboard />} />,

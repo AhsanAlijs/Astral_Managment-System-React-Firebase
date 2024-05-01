@@ -24,7 +24,7 @@ const EmployeeTasks = () => {
 
                 const users = query(collection(db, "users"));
                 const userSnapshot = await getDocs(users);
-                
+
                 const taskUser = []
 
                 userSnapshot.forEach((users) => {
@@ -62,10 +62,10 @@ const EmployeeTasks = () => {
     const status = async (item) => {
         const washingtonRef = doc(db, "tasks", item.id);
         let status;
-        if (item.status === 'Pending') {
-            status = 'Completed'
-        } else {
+        if (item.status === 'notreceive') {
             status = 'Pending'
+        } else {
+            status = 'Completed'
         }
 
         // Set the "capital" field of the city 'DC'
@@ -73,6 +73,7 @@ const EmployeeTasks = () => {
             status
         });
         // console.log('status change successfully');
+        getData()
     }
 
 
@@ -98,11 +99,20 @@ const EmployeeTasks = () => {
                                                 {item.title}
                                             </h2>
 
-                                            {item.status === 'Pending' ? <p key={item.id} className="px-2 py-1 rounded-full bg-yellow-200 text-yellow-800 text-xs font-medium">
-                                                {item.status}
-                                            </p> : <p className="px-2 py-1 rounded-full bg-green-200 text-green-800 text-xs font-medium">
-                                                {item.status}
-                                            </p>}
+                                            {item.status === 'notreceive' ? (
+                                                <p key={item.id} className="px-2 py-1 rounded-full bg-yellow-200 text-yellow-800 text-xs font-medium">
+                                                    {item.status}
+                                                </p>
+                                            ) : item.status === 'Pending' ? (
+                                                <p key={item.id} className="px-2 py-1 rounded-full bg-yellow-200 text-yellow-800 text-xs font-medium">
+                                                    {item.status}
+                                                </p>
+                                            ) : (
+                                                <p className="px-2 py-1 rounded-full bg-green-200 text-green-800 text-xs font-medium">
+                                                    {item.status}
+                                                </p>
+                                            )}
+
 
                                         </div>
 
@@ -112,7 +122,7 @@ const EmployeeTasks = () => {
                                             <time>{item.lastDate}</time>
                                         </div>
 
-                                        <p className="mt-6">
+                                        <p className="mt-6 break-words">
                                             {item.description}
                                         </p>
 
@@ -136,7 +146,10 @@ const EmployeeTasks = () => {
                                         </ul>
 
                                         <div className='flex items-center justify-end '>
-                                            <button onClick={(e) => status(item)} className='px-2 py-1 rounded-full bg-teal-800 text-white text-xs font-medium  '>Task Completed</button>
+
+                                            {item.status === 'Completed' ?
+                                                <button onClick={(e) => status(item)} className='px-2 py-1 hidden rounded-full bg-teal-800 text-white text-xs font-medium  '>Task Progress</button> :
+                                                <button onClick={(e) => status(item)} className='px-2 py-1 rounded-full bg-teal-800 text-white text-xs font-medium  '>Task Progress</button>}
 
                                         </div>
 

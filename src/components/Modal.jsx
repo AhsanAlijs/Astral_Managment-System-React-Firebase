@@ -28,6 +28,8 @@ const Modal = ({ closeModal, handleOutsideClick, task }) => {
         const data = await setDoc(doc(db, "tasks", task.id), formData);
         console.log(data);
 
+
+
         let timerInterval;
         Swal.fire({
             title: "Edit Successfully!",
@@ -46,8 +48,9 @@ const Modal = ({ closeModal, handleOutsideClick, task }) => {
             }
         }).then((result) => {
             if (result.dismiss === Swal.DismissReason.timer) {
-                console.log("I was closed by the timer");
+                return closeModal()
             }
+
         });
 
     }
@@ -61,9 +64,9 @@ const Modal = ({ closeModal, handleOutsideClick, task }) => {
 
     return (
         <>
-            <div className='max-w-screen-xl mx-auto p-4'>
+            <div className='max-w-screen-xl mx-auto p-4 '>
                 <div className="  fixed inset-0 bg-gray-600 bg-opacity-50  h-full w-full" id="modal" onClick={handleOutsideClick}>
-                    <div className="relative top-20 mx-auto p-5 border w-[98%]  max-w-screen-lg shadow-lg rounded-md bg-gradient-to-bl from-teal-100 to-teal-200 ">
+                    <div className="relative top-10 mx-auto p-5 border w-[98%]  max-w-screen-lg shadow-lg rounded-md bg-gradient-to-bl from-teal-100 to-teal-200 ">
                         <div className="mt-3 text-center">
                             <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-purple-100">
                                 <img src="https://w7.pngwing.com/pngs/1018/119/png-transparent-computer-icons-editing-pencil-miscellaneous-angle-pencil.png" className='h-6 w-6 text-teal-500' alt="" />

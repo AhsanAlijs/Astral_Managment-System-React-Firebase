@@ -40,14 +40,14 @@ const Tasks = () => {
             const querySnapshot = await getDocs(q);
 
             const allTask = []
-            
+
             querySnapshot.forEach(async (doc) => {
                 const taskData = doc.data()
 
                 const users = query(collection(db, "users"));
 
                 const userSnapshot = await getDocs(users);
-                
+
                 const taskUser = []
 
                 userSnapshot.forEach((users) => {
@@ -58,10 +58,10 @@ const Tasks = () => {
                     }
                 });
 
-                
-                
+
+
                 allTask.push({ ...taskData, id: doc.id, assignee: taskUser })
-                
+
                 // console.log(allTask);
                 // allTask.push({ id: doc.id, ...(doc.data()) })
                 setAllUser(allTask);
@@ -77,6 +77,7 @@ const Tasks = () => {
 
     const deleteTask = async (item) => {
         await deleteDoc(doc(db, "tasks", item.id));
+        getData()
     }
 
 
@@ -124,12 +125,12 @@ const Tasks = () => {
                                         </p>
 
                                         <ul className="text-sm flex flex-col gap-1 list-disc list-inside mt-4 [&_p]:inline">
-                                           {item.assignee.map((item)=>(
-                                            <li>
-                                                <p>{item.name}</p>
-                                            </li>
-                                           ))}
-                                           
+                                            {item.assignee.map((item) => (
+                                                <li>
+                                                    <p>{item.name}</p>
+                                                </li>
+                                            ))}
+
                                         </ul>
                                         <div className='flex items-center justify-end gap-10' >
 

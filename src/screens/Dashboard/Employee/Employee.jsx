@@ -11,9 +11,9 @@ import Swal from 'sweetalert2';
 
 const Employee = () => {
 
-    const employeesTypeArray = ['Web', 'Sales', 'Graphics', 'Ui/Ux Designer'];
+    const employeesTypeArray = ['Development', 'Sales', 'Graphics', 'Ui/Ux Designer'];
 
-    const [targetEmployee, setTargetEmployee] = useState('Web');
+    const [targetEmployee, setTargetEmployee] = useState('Development');
 
 
 
@@ -48,7 +48,7 @@ const Employee = () => {
         const desertRef = sRef(storage, e.email);
         try {
             await deleteObject(desertRef);
-            console.log('File deleted successfully');
+            getAllUsers()
         } catch (error) {
             console.log('Uh-oh, an error occurred!', error);
         }
@@ -77,7 +77,7 @@ const Employee = () => {
 
     const getEmployee = (e) => {
         setTargetEmployee(e)
-        let abc = employeeArray.filter((x, i) => x.position == e)
+        let abc = employeeArray.filter((x, i) => x.department == e)
         setArr([...abc])
     };
 
@@ -124,9 +124,9 @@ const Employee = () => {
                     {employeesTypeArray.map((item, index) => {
                         return (
                             <li key={index} className=''  >
-                                <div className='bg-gradient-to-r from-teal-500 to-50% to-transparent pb-[2px] hover:bg-teal-500 transition-colors 
-                                ease-in-out ' >
-                                    <button onClick={() => getEmployee(item)} className="pb-2  bg-[#ecfafa] text-xl font-semibold  uppercase  
+                                <div className='bg-gradient-to-r from-teal-500 to-0% to-transparent pb-[2px] hover:bg-teal-500 
+                                 transition-colors duration-300  ease-in-out ' >
+                                    <button onClick={() => getEmployee(item)} className="pb-2  bg-[#ecfafa] text-base font-semibold  uppercase  
              ">                     {item}
                                     </button>
                                 </div>

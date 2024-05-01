@@ -3,6 +3,7 @@ import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../../config/firebase/firebaseConfig';
 import { useAuth } from '../AuthProvider';
+import Swal from 'sweetalert2';
 
 
 const Login = () => {
@@ -20,32 +21,52 @@ const Login = () => {
 
 
 
- 
 
-  const loginUser = (e) => {
+
+  const loginUser = async (e) => {
     e.preventDefault();
-    signInWithEmailAndPassword(auth, loginData.email, loginData.password)
-      .then((userCredential) => {
-        const users = userCredential.user;
-        // console.log(users);
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, loginData.email, loginData.password);
+      const user = userCredential.user;
 
-        switch (user.type) {
-          case 'Admin':
-            navigate("/dashboard");
-            break;
-          case 'Manager':
-            navigate("/manager");
-            break;
-          case 'Employee':
-            navigate("/employee");
-            break;
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
         }
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorMessage);
       });
+
+      Toast.fire({
+        icon: "success",
+        title: "Login Successfully"
+      });
+
+      switch (user.type) {
+        case 'Admin':
+          navigate("/dashboard");
+          break;
+        case 'Manager':
+          navigate("/manager");
+          break;
+        case 'Employee':
+          navigate("/employee");
+          break;
+      }
+    } catch (error) {
+      const errorMessage = error.message;
+      Swal.fire({
+        position: "center",
+        icon: "warning",
+        title: errorMessage,
+        showConfirmButton: false,
+        timer: 1500
+      });
+    }
   }
 
   if (user) {
@@ -72,7 +93,7 @@ const Login = () => {
             alt="Your Company"
           />
           <h2 className="text-2xl font-bold leading-9 tracking-tight text-black mb-5">
-            Sign In 
+            Sign In
           </h2>
           <form onSubmit={(e) => loginUser(e)} className="w-full" action="#" method="POST">
             <div className="mb-4">
@@ -107,9 +128,9 @@ const Login = () => {
                 className="block w-full rounded-md border-gray-300 shadow-sm py-2 px-3 placeholder-gray-400 focus:outline-none focus:ring-teal-500 focus:border-teal-500 focus:shadow-outline-indigo transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                 onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
               />
-              <a href="#" className="text-sm mt-2 block font-semibold ">
+              <Link to={'/password-reset'} className="text-sm mt-2 block font-semibold ">
                 Forgot password?
-              </a>
+              </Link>
             </div>
 
             <div>
