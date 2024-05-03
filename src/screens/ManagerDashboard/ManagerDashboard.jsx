@@ -1,7 +1,7 @@
 import { RiBarChartGroupedFill, RiCloseFill, RiMenuFill, RiProfileFill, RiTaskFill, RiUser2Fill, RiUserAddFill, RiUserStarFill } from "@remixicon/react";
 import { signOut } from "firebase/auth";
 import { useRef } from "react";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import { auth } from "../../config/firebase/firebaseConfig";
 import { useAuth } from "../AuthProvider";
 
@@ -62,19 +62,19 @@ export default function Dashboard() {
             </div>
 
             <ul className="flex flex-col gap-4 mt-4">
-              <Link to="/manager" className="flex gap-4 items-center hover:text-teal-300 transition-colors">
+              <NavLink end to="/manager" className="flex gap-4 items-center hover:text-teal-300 transition-colors">
                 <span className='text-teal-300 '>
                   <RiTaskFill size={24} />
                 </span>
                 <span>All Tasks</span>
-              </Link>
+              </NavLink>
 
-              <Link to="/manager/managerProfile" className="flex gap-4 items-center hover:text-teal-300 transition-colors">
+              <NavLink end to="/manager/managerProfile" className="flex gap-4 items-center hover:text-teal-300 transition-colors">
                 <span className='text-teal-300'>
                   <RiProfileFill size={24} />
                 </span>
                 <span>Profile</span>
-              </Link>
+              </NavLink>
             </ul>
           </nav>
         </div>

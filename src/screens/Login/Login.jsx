@@ -15,36 +15,13 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-
-
   const { user } = useAuth();
-
-
-
-
 
   const loginUser = async (e) => {
     e.preventDefault();
     try {
       const userCredential = await signInWithEmailAndPassword(auth, loginData.email, loginData.password);
       const user = userCredential.user;
-
-      const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.onmouseenter = Swal.stopTimer;
-          toast.onmouseleave = Swal.resumeTimer;
-        }
-      });
-
-      Toast.fire({
-        icon: "success",
-        title: "Login Successfully"
-      });
 
       switch (user.type) {
         case 'Admin':
@@ -59,13 +36,16 @@ const Login = () => {
       }
     } catch (error) {
       const errorMessage = error.message;
-      Swal.fire({
-        position: "center",
-        icon: "warning",
-        title: errorMessage,
-        showConfirmButton: false,
-        timer: 1500
-      });
+
+      if (error.message.includes('Firebase: Error (auth/invalid-credential)')) {
+        Swal.fire({
+          position: "center",
+          icon: "warning",
+          title: 'Email or password is incorrect. Please try again.',
+          showConfirmButton: false,
+          timer: 1500
+        });
+      }
     }
   }
 
@@ -82,10 +62,7 @@ const Login = () => {
 
   return (
     <>
-
-
       <div className="flex items-center justify-center h-screen px-6 py-12 lg:px-8 bg-gradient-to-b from-teal-800 to-teal-400 ">
-
         <div className="flex flex-col items-center justify-center  border border-[#40ffff]   rounded-e-3xl rounded-s-3xl shadow-2xl p-8 w-full sm:max-w-md ">
           <img
             className="h-[140px] w-auto mb-5"
@@ -111,7 +88,6 @@ const Login = () => {
                 onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
               />
             </div>
-
             <div className="mb-4">
               <div className="flex justify-between">
                 <label htmlFor="password" className="block text-sm font-medium leading-6 text-black">
@@ -132,7 +108,6 @@ const Login = () => {
                 Forgot password?
               </Link>
             </div>
-
             <div>
               <button
                 type="submit"
@@ -142,84 +117,22 @@ const Login = () => {
               </button>
             </div>
           </form>
-
-
         </div>
       </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      {/* <section className="bg-gray-50">
-        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-          <a href="#" className="flex items-center mb-6 text-2xl font-bold text-gray-900">
-            <img className="w-[100px] mr-2" src="/logo.png" alt="logo" />
-            Astral Developer
-          </a>
-          <div className="w-full bg-white rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0">
-            <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-              <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
-                Sign in to your account
-              </h1>
-              
-              <form onSubmit={(e) => loginUser(e)} className="space-y-4 md:space-y-6" action="#">
-                <div>
-                  <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900">Your email</label>
-                  <input type="email" name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md block w-full p-2.5" placeholder="name@company.com" required onChange={(e) => setLoginData({ ...loginData, email: e.target.value })} />
-                </div>
-                <div>
-                  <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900">Password</label>
-                  <input type="password" name="password" id="password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md block w-full p-2.5" required onChange={(e) => setLoginData({ ...loginData, password: e.target.value })} />
-                </div>
-
-                <a href="#" className="block text-sm font-medium text-end text-primary-600 hover:underline">Forgot password?</a>
-
-                <button type="submit" className="w-full text-white bg-[#2da790] hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold text-base rounded-md px-5 py-2.5 text-center transition-colors hover:bg-[#46bca6]">Sign in</button>
-                <p className="text-sm font-light text-gray-500">
-                  Don’t have an account yet? <Link to="/dashboard/register" className="font-medium text-primary-600 hover:underline">Sign up</Link>
-                </p>
-              </form>
-            </div>
-          </div>
-        </div>
-      </section> */}
-
-
-
-
-
-
-
-
-
-
     </>
   )
 }
 
 export default Login
+
+
+// Signup
+// if (err.message.includes("Firebase: Error (auth/email-already-in-use)")) {
+//   setModalOpen(true)
+//   setErrorMsg("This email is already in use. Please try another one.");
+// }
+
+// if (err.message.includes('Firebase: Error (auth/invalid-credential)')) {
+//   setModalOpen(true)
+//   setErrorMsg('Email or password is incorrect. Please try again.')
+// }

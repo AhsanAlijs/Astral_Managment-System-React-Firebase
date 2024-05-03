@@ -46,8 +46,12 @@ const UserModal = ({ user, handleOutsideClick, closeModal }) => {
         setRegister({ ...register, type: e })
     }
 
-    function handleChangePosition(e) {
+    function handleChangeDepartment(e) {
 
+        setRegister({ ...register, department: e })
+    }
+
+    const handleChangePosition = (e) => {
         setRegister({ ...register, position: e })
     }
 
@@ -191,30 +195,41 @@ const UserModal = ({ user, handleOutsideClick, closeModal }) => {
 
                                                     <div>
                                                         <label htmlFor="Position" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                                            Select an Department
+                                                            Select  Department
                                                         </label>
                                                         <select
                                                             value={register.department}
-                                                            onChange={(e) => handleChangePosition(e.target.value)}
+                                                            onChange={(e) => handleChangeDepartment(e.target.value)}
                                                             name="department"
                                                             id="Position"
                                                             selected
                                                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                         >
-                                                            <option value="">Choose any one department</option>
-                                                            <option value="Web">Web</option>
+                                                            <option value="">Select department</option>
+                                                            <option value="Development">Development</option>
                                                             <option value="Sales">Sales</option>
                                                             <option value="Graphics">Graphics</option>
                                                             <option value="Ui/Ux Designer">Ui/Ux Designer</option>
                                                         </select>
                                                     </div>
 
-                                                    <div className="flex flex-col gap-2">
-                                                        <label htmlFor="Past Experience">
-                                                            position
+                                                    <div>
+                                                        <label htmlFor="Position" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                                            Select Position
                                                         </label>
-                                                        <input value={register.position} name='pastExperience' type="text" id="Past Experience" className="rounded border border-gray-300 bg-gray-50" placeholder="Past Experience"
-                                                            required onChange={handleInput} />
+                                                        <select
+                                                            value={register.position}
+                                                            onChange={(e) => handleChangePosition(e.target.value)}
+                                                            name="position"
+                                                            id="Position"
+                                                            selected
+                                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                        >
+                                                            <option value="">Select department</option>
+                                                            <option value="Senior">Senior</option>
+                                                            <option value="Junior">Junior</option>
+                                                            <option value="Internee">Internee</option>
+                                                        </select>
                                                     </div>
 
                                                     <div className="grid grid-cols-1 sm:grid-cols-2 items-center gap-2">
@@ -250,7 +265,7 @@ const UserModal = ({ user, handleOutsideClick, closeModal }) => {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div >
 
             </div >
         </>

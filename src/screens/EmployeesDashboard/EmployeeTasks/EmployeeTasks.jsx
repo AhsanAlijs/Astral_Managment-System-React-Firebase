@@ -2,6 +2,7 @@ import { collection, doc, getDocs, query, updateDoc, where } from 'firebase/fire
 import React, { useEffect, useState } from 'react';
 import { db } from '../../../config/firebase/firebaseConfig';
 import { useAuth } from '../../AuthProvider';
+import DeletedModal from '../../../components/DeletedModal';
 
 const EmployeeTasks = () => {
     const { user } = useAuth();
@@ -52,18 +53,11 @@ const EmployeeTasks = () => {
         getData()
     }, [])
 
-
-
-
-    const [taskStatus, setTaskStatus] = useState();
-
-
-
     const status = async (item) => {
         const washingtonRef = doc(db, "tasks", item.id);
         let status;
-        if (item.status === 'notreceive') {
-            status = 'Pending'
+        if (item.status === 'pending') {
+            status = 'In Progress'
         } else {
             status = 'Completed'
         }
@@ -99,12 +93,12 @@ const EmployeeTasks = () => {
                                                 {item.title}
                                             </h2>
 
-                                            {item.status === 'notreceive' ? (
+                                            {item.status === 'pending' ? (
                                                 <p key={item.id} className="px-2 py-1 rounded-full bg-yellow-200 text-yellow-800 text-xs font-medium">
                                                     {item.status}
                                                 </p>
-                                            ) : item.status === 'Pending' ? (
-                                                <p key={item.id} className="px-2 py-1 rounded-full bg-yellow-200 text-yellow-800 text-xs font-medium">
+                                            ) : item.status === 'In Progress' ? (
+                                                <p key={item.id} className="px-2 py-1 rounded-full bg-orange-200 text-orange-800 text-xs font-medium">
                                                     {item.status}
                                                 </p>
                                             ) : (
@@ -162,6 +156,7 @@ const EmployeeTasks = () => {
 
                     </ul>
                 </div>
+
             </main>
         </>
     )

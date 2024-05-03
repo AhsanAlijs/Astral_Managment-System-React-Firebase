@@ -1,7 +1,7 @@
 import { RiBarChartGroupedFill, RiCloseFill, RiMenuFill, RiProfileFill, RiUser2Fill, RiUserAddFill, RiUserStarFill } from "@remixicon/react";
 import { signOut } from "firebase/auth";
 import { useRef } from "react";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import { auth } from "../../config/firebase/firebaseConfig";
 import { useAuth } from "../AuthProvider";
 
@@ -62,36 +62,36 @@ export default function Dashboard() {
                         </div>
 
                         <ul className="flex flex-col gap-4 mt-4">
-                            <Link to="/dashboard" className="flex gap-4 items-center hover:text-teal-300 transition-colors">
+                            <NavLink end to="/dashboard" className="flex gap-4 items-center hover:text-teal-300 transition-colors">
                                 <span className='text-teal-300 '>
                                     <RiBarChartGroupedFill size={24} />
                                 </span>
                                 <span>Dashboard</span>
-                            </Link>
-                            <Link to="/dashboard/register" className="flex gap-4 items-center hover:text-teal-300 transition-colors">
+                            </NavLink>
+                            <NavLink end to="/dashboard/register" className="flex gap-4 items-center hover:text-teal-300 transition-colors">
                                 <span className='text-teal-300' >
                                     <RiUserAddFill size={24} />
                                 </span>
                                 <span>Register</span>
-                            </Link>
-                            <Link to="/dashboard/employee" className="flex gap-4 items-center hover:text-teal-300 transition-colors">
+                            </NavLink>
+                            <NavLink end to="/dashboard/employee" className="flex gap-4 items-center hover:text-teal-300 transition-colors">
                                 <span className='text-teal-300'>
                                     <RiUser2Fill size={24} />
                                 </span>
                                 <span>Employee</span>
-                            </Link>
-                            <Link to="/dashboard/managers" className="flex gap-4 items-center hover:text-teal-300 transition-colors">
+                            </NavLink>
+                            <NavLink end to="/dashboard/managers" className="flex gap-4 items-center hover:text-teal-300 transition-colors">
                                 <span className='text-teal-300'>
                                     <RiUserStarFill size={24} />
                                 </span>
                                 <span>Manager</span>
-                            </Link>
-                            <Link to="/dashboard/profile" className="flex gap-4 items-center hover:text-teal-300 transition-colors">
+                            </NavLink>
+                            <NavLink end to="/dashboard/profile" className="flex gap-4 items-center hover:text-teal-300 transition-colors">
                                 <span className='text-teal-300'>
                                     <RiProfileFill size={24} />
                                 </span>
                                 <span>Profile</span>
-                            </Link>
+                            </NavLink>
                         </ul>
                     </nav>
                 </div>

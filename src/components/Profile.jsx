@@ -58,6 +58,7 @@ function ProfileComponent() {
                                     </span>
                                     {user.email}
                                 </p>
+
                                 <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
 
                                     <span className="h-4 fill-current text-teal-700" >
@@ -66,6 +67,7 @@ function ProfileComponent() {
 
                                     {user.phoneNumber}
                                 </p>
+
                                 <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
 
                                     <span className="h-4 fill-current text-teal-700" >
@@ -73,17 +75,19 @@ function ProfileComponent() {
                                     </span>
                                     {user.type}
                                 </p>
+
                                 <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
                                     <span className="h-4 fill-current text-teal-700">
                                         <RiUserLocationFill size={24} />
                                     </span>
                                     {user.address}
                                 </p>
+
                                 <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
 
                                     <span className='h-4 fill-current text-teal-700'><RiBriefcaseFill size={24} /></span>
 
-                                    {user.PastExperience}
+                                    {user.department}
                                 </p>
 
                                 <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
@@ -102,6 +106,7 @@ function ProfileComponent() {
 
                                     {user.qualification}
                                 </p>
+
                                 <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
 
                                     <span className="h-4 fill-current text-teal-700" >
@@ -110,6 +115,7 @@ function ProfileComponent() {
 
                                     {user.registerId}
                                 </p>
+
                                 <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
 
                                     <span className='h-4 fill-current text-teal-700'>
@@ -119,13 +125,6 @@ function ProfileComponent() {
                                 </p>
                             </>
                         }
-
-
-
-
-
-
-
                     </div>
                 </div>
                 <div className="w-full lg:w-2/5">

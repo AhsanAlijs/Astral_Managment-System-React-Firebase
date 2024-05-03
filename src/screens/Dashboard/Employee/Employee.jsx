@@ -44,6 +44,26 @@ const Employee = () => {
 
 
     const deleteDocUser = async (e) => {
+
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "Deleted!",
+                    text: "Your file has been deleted.",
+                    icon: "success"
+                });
+            }
+        });
+
+
         await deleteDoc(doc(db, "users", e.id));
         const desertRef = sRef(storage, e.email);
         try {
@@ -67,6 +87,8 @@ const Employee = () => {
             icon: "success",
             title: "Deleted Successfully!"
         });
+
+        getAllUsers()
 
     }
 
@@ -147,7 +169,7 @@ const Employee = () => {
                                 <th scope="col" className="px-6 py-4 font-medium text-gray-900">State</th>
                                 <th scope="col" className="px-6 py-4 font-medium text-gray-900">Role</th>
                                 <th scope="col" className="px-6 py-4 font-medium text-gray-900">Salary</th>
-                                <th scope="col" className="px-6 py-4 font-medium text-gray-900"></th>
+                                <th scope="col" className="px-6 py-4 font-medium text-gray-900">{arr.length}</th>
                             </tr>
                         </thead>
 
@@ -178,9 +200,8 @@ const Employee = () => {
                                     <td className="px-6 py-4">
                                         <div className="flex gap-2">
                                             <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-1 text-xs font-semibold text-blue-600">
-                                                {item.salary}
+                                                PKR {item.salary}
                                             </span>
-
                                         </div>
                                     </td>
                                     <td className="px-6 py-4">

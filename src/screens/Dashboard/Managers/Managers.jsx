@@ -75,7 +75,7 @@ const Managers = () => {
         } catch (error) {
             console.log('Uh-oh, an error occurred!', error);
         }
-        getAllUsers()
+
         const Toast = Swal.mixin({
             toast: true,
             position: "top-end",
@@ -91,6 +91,7 @@ const Managers = () => {
             icon: "success",
             title: "Deleted Successfully!"
         });
+        getAllUsers()
     }
 
 
@@ -146,7 +147,7 @@ const Managers = () => {
                                 <th scope="col" className="px-6 py-4 font-medium text-gray-900">State</th>
                                 <th scope="col" className="px-6 py-4 font-medium text-gray-900">Role</th>
                                 <th scope="col" className="px-6 py-4 font-medium text-gray-900">Salary</th>
-                                <th scope="col" className="px-6 py-4 font-medium text-gray-900"></th>
+                                <th scope="col" className="px-6 py-4 font-medium text-gray-900">{arr.length}</th>
                             </tr>
                         </thead>
 

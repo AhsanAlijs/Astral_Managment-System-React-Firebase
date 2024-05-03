@@ -12,7 +12,6 @@ const AddTask = () => {
     const { user } = useAuth();
 
 
-
     const [notLoading, SetNotLoading] = useState(true);
 
     const loadings = () => {
@@ -23,31 +22,27 @@ const AddTask = () => {
         }
     }
 
-
     const [formData, setFormData] = useState({
         title: '',
+        department: user.department,
         description: '',
         startDate: '',
         lastDate: '',
         assignee: [],
-        status: 'notreceive',
+        status: 'pending',
         managerId: user.id,
         managerName: user.name
     });
 
-
-
     const [allUsers, setAllUser] = useState([]);
-
 
     useEffect(() => {
         getData()
     }, [])
 
-
     const getData = async () => {
         try {
-            const q = query(collection(db, "users"), where("type", "==", "Employee"));
+            const q = query(collection(db, "users"), where("type", "==", "Employee"), where("department", "==", user.department));
             const querySnapshot = await getDocs(q);
 
             const allUser = []
@@ -66,17 +61,9 @@ const AddTask = () => {
 
 
 
-
-
-
-
-
-
-
-
     const handleSubmit = async () => {
         const docRef = await addDoc(collection(db, "tasks"), formData);
-        formData.reset.value
+
         Swal.fire({
             title: "Add task",
             text: "Task successfully assign",

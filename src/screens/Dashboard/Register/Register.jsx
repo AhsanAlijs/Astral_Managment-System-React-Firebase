@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { Link, useNavigate } from 'react-router-dom';
-import { auth, db, storage } from '../../../config/firebase/firebaseConfig';
+import React, { useState } from 'react';
 import Swal from 'sweetalert2';
+import { auth, db, storage } from '../../../config/firebase/firebaseConfig';
 
 
 
@@ -156,11 +155,11 @@ const CreateEmployee = () => {
           const cvUrl = await getDownloadURL(cvSnapshot.ref)
 
           const cnicStorageRef = ref(storage, `/cnic/${register.email}`);
-          const cnicSnapshot = await uploadBytes(cnicStorageRef, cvFile)
+          const cnicSnapshot = await uploadBytes(cnicStorageRef, cnicImage)
           const cnicUrl = await getDownloadURL(cnicSnapshot.ref)
 
           const offerStorageRef = ref(storage, `/offer/${register.email}`);
-          const offerSnapshot = await uploadBytes(offerStorageRef, cvFile)
+          const offerSnapshot = await uploadBytes(offerStorageRef, offerLetter)
           const offerUrl = await getDownloadURL(offerSnapshot.ref)
 
 
@@ -208,7 +207,6 @@ const CreateEmployee = () => {
         const errorMessage = error.message;
         console.log(errorMessage);
       });
-
   }
 
   return (
