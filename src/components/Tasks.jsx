@@ -62,17 +62,16 @@ const Tasks = () => {
                     }
                 });
                 allTask.push({ ...taskData, id: doc.id, assignee: taskUser })
-                // console.log(allTask);
                 setAllUser(allTask);
             });
+
+
         } catch (error) {
             console.error('Error fetching data:', error);
         }
     }
 
-    const closeDeleteModal = async () => {
-        setIsModalOpen(false);
-    };
+
 
     useEffect(() => {
         getData()
@@ -92,6 +91,9 @@ const Tasks = () => {
         setDeleteTask(item)
     };
 
+    const closeDeleteModal = async () => {
+        setIsModalOpen(false);
+    };
 
 
 
@@ -112,9 +114,10 @@ const Tasks = () => {
                             return (
                                 <li key={item.id} >
                                     <article className="border p-6 rounded-md shadow-md">
-                                        <div className="flex justify-between items-center">
-                                            <h2 className="text-2xl font-bold text-neutral-800">
-                                                {item.title}</h2>
+                                        <div className="flex justify-between items-center  ">
+                                            <h2 className="text-2xl font-bold text-neutral-800 [word-break:break-word] ">
+                                                {item.title}
+                                            </h2>
 
 
                                             {item.status === 'pending' ? (

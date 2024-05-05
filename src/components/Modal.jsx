@@ -1,35 +1,26 @@
-import { RiCheckDoubleLine, RiCloseLargeFill, RiEdit2Line } from '@remixicon/react';
+import { RiCheckDoubleLine, RiCloseLargeFill } from '@remixicon/react';
 import { doc, setDoc } from 'firebase/firestore';
 import { useState } from 'react';
-import { db } from '../config/firebase/firebaseConfig';
 import Swal from 'sweetalert2';
+import { db } from '../config/firebase/firebaseConfig';
 
 const Modal = ({ closeModal, handleOutsideClick, task }) => {
-
-    console.log(task.id);
-
 
     const [formData, setFormData] = useState({
         title: task.title,
         description: task.description,
+        department: task.department,
         startDate: task.startDate,
         lastDate: task.lastDate,
-        assignee: task.assignee,
+        assignee: task.assignee.map((el) => el.id),
         status: task.status,
         managerId: task.managerId,
+        managerName: task.managerName
     });
-
-    console.log(formData);
-
-
 
     const editData = async (e) => {
         e.preventDefault();
         const data = await setDoc(doc(db, "tasks", task.id), formData);
-        console.log(data);
-
-
-
         let timerInterval;
         Swal.fire({
             title: "Edit Successfully!",
@@ -54,12 +45,6 @@ const Modal = ({ closeModal, handleOutsideClick, task }) => {
         });
 
     }
-
-
-
-
-
-
 
 
     return (

@@ -7,6 +7,7 @@ import { db, storage } from '../../../config/firebase/firebaseConfig';
 import UserModal from '../../../components/UserModal';
 import { deleteObject, ref as sRef } from "firebase/storage";
 import Swal from 'sweetalert2';
+import EmployeeDeleteTask from '../../../components/EmployeeDeleteTask';
 
 
 const Managers = () => {
@@ -65,17 +66,26 @@ const Managers = () => {
         }
     }
 
+    const [deleteEmployee, setDeleteEmployee] = useState(null)
 
-    const deleteDocUser = async (user) => {
-        await deleteDoc(doc(db, "users", user.id));
+    const closeDeleteModal = async () => {
+        setIsModalOpen(false);
+    };
 
-        const desertRef = sRef(storage, user.email);
+    const deleteDocUser = async () => {
+        await deleteDoc(doc(db, "users", deleteEmployee.id));
+        const desertRef = sRef(storage, deleteEmployee.email);
         try {
             await deleteObject(desertRef);
         } catch (error) {
             console.log('Uh-oh, an error occurred!', error);
         }
 
+
+
+        closeDeleteModal()
+
+        getAllUsers()
         const Toast = Swal.mixin({
             toast: true,
             position: "top-end",
@@ -91,8 +101,18 @@ const Managers = () => {
             icon: "success",
             title: "Deleted Successfully!"
         });
-        getAllUsers()
     }
+
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+
+
+
+    const openDeleteModal = (item) => {
+        setIsModalOpen(true);
+        setDeleteEmployee(item)
+    };
 
 
 
@@ -109,6 +129,10 @@ const Managers = () => {
 
 
 
+
+
+
+
     return (
         <main className="max-w-screen-xl mx-auto p-4">
             <h1 className="text-4xl max-sm:text-3xl font-semibold  text-center mt-4 text-teal-600  uppercase  
@@ -118,19 +142,20 @@ const Managers = () => {
 
             <div className="border-gray-200 mt-6">
 
-                <ul className="flex  gap-4 justify-center text-sm font-medium text-center sm:text-center " id="default-styled-tab" data-tabs-toggle="#default-styled-tab-content" data-tabs-inactive-classes=" text-gray-500 hover:text-gray-600  border-gray-100 hover:border-gray-300 " role="tablist">
+                <ul className="flex sm:justify-center sm:gap-2 lg:justify-evenly lg:flex-row  flex-col justify-center text-sm font-medium text-center sm:text-center " id="default-styled-tab" data-tabs-toggle="#default-styled-tab-content" data-tabs-inactive-classes=" text-gray-500 hover:text-gray-600  border-gray-100 hover:border-gray-300 " role="tablist">
 
 
                     {managersTypeArray.map((item, index) => {
                         return (
                             <li key={index} className=''  >
-                                <div className='bg-gradient-to-r from-teal-500 to-0% to-transparent pb-[2px] hover:bg-teal-500
-                                 transition-colors duration-300 ease-in-out ' >
+                                <div className='bg-gradient-to-r from-teal-500 to-0% to-transparent pb-[2px] lg:hover:bg-teal-500
+                                 transition-colors duration-300 ease-in-out left-0 ' >
                                     <button onClick={() => getEmployee(item)}
-                                        className="pb-2  bg-[#ecfafa] text-base font-semibold  uppercase  ">
+                                        className="pb-2  bg-[#ecfafa] text-base font-medium  uppercase   ">
                                         {item}
                                     </button>
                                 </div>
+                               
                             </li>
                         );
                     })}
@@ -138,6 +163,13 @@ const Managers = () => {
             </div>
 
             <div className="overflow-x-auto lg:overflow-hidden  rounded-lg border  border-gray-200 shadow-md bg-white mt-8">
+
+                {isModalOpen && (<EmployeeDeleteTask closeDeleteModal={closeDeleteModal} deleteEmployee={deleteEmployee} deletedEmployee={deleteDocUser} />)}
+
+
+
+
+
                 {modalOpen && (<UserModal closeModal={closeModal} user={selectedUser} handleOutsideClick={handleOutsideClick} />)}
                 {arr.length > 0 ?
                     <table className="w-full border-collapse bg-white text-left text-sm text-gray-500  ">
@@ -185,7 +217,7 @@ const Managers = () => {
                                     </td>
                                     <td className="px-6 py-4">
                                         <div className="flex justify-end gap-4">
-                                            <button onClick={(e) => deleteDocUser(item)}  >
+                                            <button onClick={() => { openDeleteModal(item) }}  >
                                                 <RiDeleteBin2Fill size={25} />
                                             </button>
 

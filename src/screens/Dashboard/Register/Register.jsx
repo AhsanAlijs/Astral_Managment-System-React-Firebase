@@ -431,7 +431,7 @@ const CreateEmployee = () => {
                     <input name='salary' type="number" id="Salary" className="w-full rounded border border-gray-300 bg-gray-50" min={0} maxLength={10} placeholder="Salary" required onChange={handleInput} />
                   </div>
 
-                  <div className="flex flex-col gap-2 ">
+                   <div className="flex flex-col gap-2 ">
                     <label htmlFor="Id">
                       ID
                     </label>

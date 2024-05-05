@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { db } from '../../../config/firebase/firebaseConfig';
 import { useAuth } from '../../AuthProvider';
 import DeletedModal from '../../../components/DeletedModal';
+import Swal from 'sweetalert2';
 
 const EmployeeTasks = () => {
     const { user } = useAuth();
@@ -65,9 +66,32 @@ const EmployeeTasks = () => {
         // Set the "capital" field of the city 'DC'
         await updateDoc(washingtonRef, {
             status
+
         });
         // console.log('status change successfully');
         getData()
+        let timerInterval;
+        Swal.fire({
+            title: "Generate Progress",
+            html: "I will close in <b></b> milliseconds.",
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                    timer.textContent = `${Swal.getTimerLeft()}`;
+                }, 100);
+            },
+            willClose: () => {
+                clearInterval(timerInterval);
+            }
+        }).then((result) => {
+            /* Read more about handling dismissals below */
+            if (result.dismiss === Swal.DismissReason.timer) {
+                console.log("I was closed by the timer");
+            }
+        });
     }
 
 
@@ -89,7 +113,7 @@ const EmployeeTasks = () => {
                                 <li key={item.id} >
                                     <article className="border p-6 rounded-md shadow-md">
                                         <div className="flex justify-between items-center">
-                                            <h2 className="text-2xl font-bold text-neutral-800">
+                                            <h2 className="text-2xl font-bold text-neutral-800 [word-break:break-word]">
                                                 {item.title}
                                             </h2>
 
@@ -141,9 +165,21 @@ const EmployeeTasks = () => {
 
                                         <div className='flex items-center justify-end '>
 
-                                            {item.status === 'Completed' ?
-                                                <button onClick={(e) => status(item)} className='px-2 py-1 hidden rounded-full bg-teal-800 text-white text-xs font-medium  '>Task Progress</button> :
-                                                <button onClick={(e) => status(item)} className='px-2 py-1 rounded-full bg-teal-800 text-white text-xs font-medium  '>Task Progress</button>}
+                                            {
+                                                item.status === 'pending' ? (
+                                                    <button onClick={(e) => status(item)} className='px-2 py-1 rounded-full bg-teal-800 text-white text-xs font-medium'>
+                                                        In Progress
+                                                    </button>
+                                                ) : item.status === 'In Progress' ? (
+                                                    <button onClick={(e) => status(item)} className='px-2 py-1 rounded-full bg-teal-800 text-white text-xs font-medium'>
+                                                        Completed
+                                                    </button>
+                                                ) : (
+                                                    <button onClick={(e) => status(item)} className='hidden px-2 py-1 rounded-full bg-teal-800 text-white text-xs font-medium'>
+                                                        Completed
+                                                    </button>
+                                                )
+                                            }
 
                                         </div>
 
@@ -157,7 +193,7 @@ const EmployeeTasks = () => {
                     </ul>
                 </div>
 
-            </main>
+            </main >
         </>
     )
 }

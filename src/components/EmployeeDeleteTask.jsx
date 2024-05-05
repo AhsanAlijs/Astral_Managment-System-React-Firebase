@@ -1,55 +1,7 @@
-import React, { useState } from 'react'
-import { deleteDoc, doc } from 'firebase/firestore';
-import { db } from '../config/firebase/firebaseConfig';
-import Swal from 'sweetalert2';
+import React from 'react'
 
-const DeletedModal = ({ closeDeleteModal, deleteTask, getData , }) => {
-
-    const deletedTask = async () => {
-        await deleteDoc(doc(db, "tasks", deleteTask.id));
-        const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
-            }
-        });
-        Toast.fire({
-            icon: "success",
-            title: "Deleted Task successfully"
-        });
-
-        closeDeleteModal()
-        getData()
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+const EmployeeDeleteTask = ({ closeDeleteModal, deletedEmployee }) => {
     return (
-
         <>
             <div className="fixed top-0 left-0 flex justify-center items-center w-full h-full bg-black bg-opacity-40 p-2 ">
                 <div className="bg-white rounded-lg shadow-lg p-6">
@@ -95,7 +47,7 @@ const DeletedModal = ({ closeDeleteModal, deleteTask, getData , }) => {
                             Are you sure you want to delete this product?
                         </h3>
                         <button
-                            onClick={deletedTask}
+                            onClick={deletedEmployee}
                             type="button"
                             className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5"
                         >
@@ -111,12 +63,9 @@ const DeletedModal = ({ closeDeleteModal, deleteTask, getData , }) => {
                     </div>
                 </div>
             </div>
-
         </>
-
-
 
     )
 }
 
-export default DeletedModal
+export default EmployeeDeleteTask

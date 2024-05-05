@@ -63,7 +63,17 @@ const AddTask = () => {
 
     const handleSubmit = async () => {
         const docRef = await addDoc(collection(db, "tasks"), formData);
-
+        setFormData({
+            title: '',
+            department: user.department,
+            description: '',
+            startDate: '',
+            lastDate: '',
+            assignee: [],
+            status: 'pending',
+            managerId: user.id,
+            managerName: user.name
+        })
         Swal.fire({
             title: "Add task",
             text: "Task successfully assign",
@@ -117,7 +127,7 @@ const AddTask = () => {
                                               mb-2 text-[20px] font-medium" htmlFor="grid-password">
                                             Task Title
                                         </label>
-                                        <input onChange={(e) => setFormData({ ...formData, title: e.target.value })} name='title' type="text" className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-lg shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150   " placeholder='Task title' />
+                                        <input value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} name='title' type="text" className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-lg shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150   " placeholder='Task title' />
                                     </div>
                                 </div>
 
@@ -128,6 +138,7 @@ const AddTask = () => {
                                             Task Details
                                         </label>
                                         <textarea
+                                            value={formData.description}
                                             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                                             name='description'
                                             className="border-0 text-lg  px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded  shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
@@ -149,6 +160,7 @@ const AddTask = () => {
                                             Start Date of Task
                                         </label>
                                         <input
+                                            value={formData.startDate}
                                             onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
                                             name='date'
                                             type="Date"
@@ -169,6 +181,7 @@ const AddTask = () => {
                                             Last Date of Submit Task
                                         </label>
                                         <input
+                                            value={formData.lastDate}
                                             onChange={(e) => setFormData({ ...formData, lastDate: e.target.value })}
                                             name='date'
                                             type="Date"
@@ -198,7 +211,7 @@ const AddTask = () => {
                                 <div className="w-full lg:w-12/12 px-4">
                                     <div className="relative w-full mb-3">
                                         <label htmlFor="underline_select" className="block uppercase text-blueGray-600 mb-2 text-[20px] font-medium">Select Employees</label>
-                                        <select onChange={(e) => {
+                                        <select value={formData.assignee} onChange={(e) => {
                                             let items = e.target.selectedOptions;
                                             let assigneeArr = [];
                                             for (let i = 0; i < items.length; i++) {
@@ -207,7 +220,6 @@ const AddTask = () => {
                                             }
                                             setFormData({ ...formData, assignee: assigneeArr })
                                         }} name='select' id="underline_select" className=" text-lg  border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded  shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" multiple>
-                                            <option>Select an Employees</option>
                                             {allUsers.map((user) => <option key={user.id} value={user.id} >{user.name}</option>)}
                                         </select>
                                     </div>
